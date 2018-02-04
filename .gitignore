@@ -1,0 +1,10 @@
+bin/
+dist/
+build/
+
+# IntelliJ files
+.idea/
+*.iml
+out/
+
+.class
