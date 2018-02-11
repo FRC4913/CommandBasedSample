@@ -19,28 +19,44 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 /**
- * An example subsystem.  You can replace me with your own Subsystem.
+ * An example subsystem. You can replace me with your own Subsystem.
  */
 public class DriveSubsystem extends Subsystem {
+
+	double ySpeed = 0;
+	double yControllerInput;
+	double scaledYcontrollerInput;
+	double ySpeedScale = 0.01;// placeholder
+	double yDiff;
+	double scaledYDiff;
+
 	WPI_TalonSRX rightRearMotor = new WPI_TalonSRX(RobotMap.RIGHT_REAR_MOTOR_PORT);
 	WPI_TalonSRX leftRearMotor = new WPI_TalonSRX(RobotMap.LEFT_REAR_MOTOR_PORT);
 	WPI_TalonSRX rightFrontMotor = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_MOTOR_PORT);
 	WPI_TalonSRX leftFrontMotor = new WPI_TalonSRX(RobotMap.LEFT_FRONT_MOTOR_PORT);
 
-	SpeedControllerGroup leftGroup = new SpeedControllerGroup(
-			leftFrontMotor, leftRearMotor);
-	SpeedControllerGroup rightGroup = new SpeedControllerGroup(
-			rightFrontMotor, rightRearMotor);
+	SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftFrontMotor, leftRearMotor);
+	SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightFrontMotor, rightRearMotor);
 
-	DifferentialDrive robotDrive = new DifferentialDrive(
-			leftGroup, rightGroup);
+	DifferentialDrive robotDrive = new DifferentialDrive(leftGroup, rightGroup);
 
 	public void initDefaultCommand() {
 		setDefaultCommand(new Drive());
 	}
 
+	public void stopMotor() {
+		robotDrive.stopMotor();
+	}
+
 	public void arcadeDrive() {
-		robotDrive.arcadeDrive(OI.controller.getY(Hand.kLeft),
-				-OI.controller.getX(Hand.kLeft));
+		yControllerInput = OI.controller.getY(Hand.kLeft);
+		yDiff = yControllerInput - ySpeed;
+		scaledYDiff = yDiff * ySpeedScale;
+		ySpeed += scaledYDiff;
+		robotDrive.arcadeDrive(ySpeed, -OI.controller.getX(Hand.kLeft));
+	}
+
+	public void acradeDrive(double ySpeed, double xSpeed) {
+		robotDrive.arcadeDrive(ySpeed, xSpeed);
 	}
 }

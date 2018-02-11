@@ -7,7 +7,13 @@
 
 package org.usfirst.frc.team4913.robot;
 
+import org.usfirst.frc.team4913.robot.commands.GrabBlock;
+import org.usfirst.frc.team4913.robot.commands.ReleaseBlock;
+import org.usfirst.frc.team4913.robot.commands.ResetGrabber;
+
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -23,15 +29,26 @@ public class OI {
 	// Button button = new JoystickButton(stick, buttonNumber);
 	public static XboxController controller = new XboxController(
 			RobotMap.XBOX_CONTROLLER_PORT);
-
+	
+	public Button xButton = new JoystickButton(controller, 3); 
+	public Button aButton = new JoystickButton(controller, 0);
+	
 	// There are a few additional built in buttons you can use. Additionally,
 	// by subclassing Button you can create custom triggers and bind those to
 	// commands the same as any other Button.
-
+	
+	public OI() {
+		xButton.whenPressed(new ReleaseBlock()); //Release the cube when X is pressed
+		xButton.whenReleased(new ResetGrabber());
+		aButton.whenPressed(new GrabBlock()); //Grab the cube when A is pressed
+		aButton.whenReleased(new ResetGrabber());
+	}
+	
 	//// TRIGGERING COMMANDS WITH BUTTONS
 	// Once you have a button, it's trivial to bind it to a button in one of
 	// three ways:
-
+	
+	//xButton.whenPressed(new GrabBlock());
 	// Start the command when the button is pressed and let it run the command
 	// until it is finished as determined by it's isFinished method.
 	// button.whenPressed(new ExampleCommand());

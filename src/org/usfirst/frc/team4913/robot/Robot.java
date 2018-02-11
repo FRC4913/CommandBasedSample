@@ -7,13 +7,20 @@
 
 package org.usfirst.frc.team4913.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4913.robot.commands.Drive;
+import org.usfirst.frc.team4913.robot.commands.TimedAutonomousDriveStraightDeliverCube;
+import org.usfirst.frc.team4913.robot.commands.TimedAutonomousDriveStraightNoCube;
+import org.usfirst.frc.team4913.robot.commands.TimedAutonomousTurnLeftDeliverCube;
+import org.usfirst.frc.team4913.robot.commands.TimedAutonomousTurnRightDeliverCube;
 import org.usfirst.frc.team4913.robot.subsystems.DriveSubsystem;
+import org.usfirst.frc.team4913.robot.subsystems.GrabberSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,8 +30,11 @@ import org.usfirst.frc.team4913.robot.subsystems.DriveSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
+	
+	Preferences prefs;
 	public static final DriveSubsystem driveSubsystem
 			= new DriveSubsystem();
+	public static final GrabberSubsystem grabbersbusytem = new GrabberSubsystem();
 	public static OI m_oi;
 
 	Command m_autonomousCommand;
@@ -40,6 +50,7 @@ public class Robot extends TimedRobot {
 		m_chooser.addDefault("Default Auto", new Drive());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
+		prefs = Preferences.getInstance();
 	}
 
 	/**
@@ -70,8 +81,33 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autonomousCommand = m_chooser.getSelected();
+		//m_autonomousCommand = m_chooser.getSelected();
+//		m_autonomousCommand = new TimedAutonomousDriveStraightDeliverCube();
+//		m_autonomousCommand = new TimedAutonomousDriveStraightNoCube();
+		
+		
+		int robotPosition = prefs.getInt("robot position", 1);
+		SmartDashboard.putNumber("Robot Position", robotPosition);
+		
+		String gameData = DriverStation.getInstance().getGameSpecificMessage();
+		SmartDashboard.putString("Game Data", gameData);
 
+		if ((robotPosition == 1 && gameData.charAt(0) == 'L') || (robotPosition == 3 && gameData.charAt(0) == 'R')) {
+			// we're in corner position and switch is our side
+			//driveStraightDeliverCube = true;
+			m_autonomousCommand = new TimedAutonomousDriveStraightDeliverCube();
+		} else if (robotPosition == 2) {
+			if (gameData.charAt(0) == 'L') {
+				m_autonomousCommand = new TimedAutonomousTurnLeftDeliverCube();
+			} else if (gameData.charAt(0) == 'R') {
+				m_autonomousCommand = new TimedAutonomousTurnRightDeliverCube();
+			}
+		} else {
+			//driveStraightNoCube = true;
+			m_autonomousCommand = new TimedAutonomousDriveStraightNoCube();
+		}
+		
+		
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
 		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
