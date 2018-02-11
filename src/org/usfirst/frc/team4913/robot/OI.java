@@ -29,9 +29,12 @@ public class OI {
 	// Button button = new JoystickButton(stick, buttonNumber);
 	public static XboxController controller = new XboxController(
 			RobotMap.XBOX_CONTROLLER_PORT);
+
+	// button 3 is X on xbox controller
+	public Button xButton = new JoystickButton(controller, 3);
 	
-	public Button xButton = new JoystickButton(controller, 3); 
-	public Button aButton = new JoystickButton(controller, 0);
+	// button 1 is A on xbox controller
+	public Button aButton = new JoystickButton(controller, 1);
 	
 	// There are a few additional built in buttons you can use. Additionally,
 	// by subclassing Button you can create custom triggers and bind those to
