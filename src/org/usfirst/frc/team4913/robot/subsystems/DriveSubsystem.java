@@ -68,10 +68,10 @@ public class DriveSubsystem extends Subsystem {
 	 */
 	public void autoDrive() {
 		if (!dio7.get() && dio8.get()) {
-			arcadeDrive(0.0, 1.0); // turn left
+			arcadeDrive(0.0, -1.0); // turn left
 		}
 		else if (dio7.get() && !dio8.get()) {
-			arcadeDrive(0.0, -1.0); // turn right
+			arcadeDrive(0.0, 1.0); // turn right
 		}
 		else if (dio7.get() && dio8.get()) {
 			arcadeDrive(-0.5, 0.0); // forward half-speed
@@ -79,7 +79,49 @@ public class DriveSubsystem extends Subsystem {
 		else if (!dio7.get() && !dio8.get()) {
 			arcadeDrive(-0.25, 0.0); // forward quarter-speed
 		}
-		Timer.delay(1);		
+		Timer.delay(1.0);
+	}
+
+	private static final double VEER_TURN_CONSTANT = 0.5;
+	private static final double VEER_DRIVE_CONSTANT = 0.5;
+
+	/**
+	 * change direction to left and drive forward slightly
+	 */
+	public void veerLeft() {
+		System.out.println("started veering left");
+		double turnTime = VEER_TURN_CONSTANT;
+		double driveTime = VEER_TURN_CONSTANT + VEER_DRIVE_CONSTANT;
+		Timer timer = new Timer();
+		timer.reset(); timer.start();
+		double time = timer.get();
+		while (time < turnTime) {
+			arcadeDrive(0.0, -1.0); // turn left
+		}
+		while (time < driveTime) {
+			arcadeDrive(-0.5, 0.0); // forward half-speed
+		}
+		while (time < driveTime + turnTime){
+			arcadeDrive(0.0, 1.0); // turn right
+		}
+		System.out.println("finished veering left");
+	}
+
+	public void veerRight() {
+		double turnTime = VEER_TURN_CONSTANT;
+		double driveTime = VEER_TURN_CONSTANT + VEER_DRIVE_CONSTANT;
+		Timer timer = new Timer();
+		timer.reset(); timer.start();
+		double time = timer.get();
+		if (time < turnTime) {
+			arcadeDrive(0.0, 1.0); // turn right
+		}
+		else if (time < driveTime) {
+			arcadeDrive(-0.5, 0.0); // forward half-speed
+		}
+		else if (time < driveTime + turnTime){
+			arcadeDrive(0.0, -1.0); // turn left
+		}
 	}
 
 	public void arcadeDrive() {
@@ -87,7 +129,7 @@ public class DriveSubsystem extends Subsystem {
 		yDiff = yControllerInput - ySpeed;
 		scaledYDiff = yDiff * ySpeedScale;
 		ySpeed += scaledYDiff;
-		robotDrive.arcadeDrive(ySpeed, -OI.XboxController.getX(Hand.kLeft));
+		robotDrive.arcadeDrive(ySpeed, OI.XboxController.getX(Hand.kLeft));
 	}
 
 	public void arcadeDrive(double ySpeed, double xSpeed) {
