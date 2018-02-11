@@ -8,12 +8,15 @@
 package org.usfirst.frc.team4913.robot.subsystems;
 
 import org.usfirst.frc.team4913.robot.OI;
+import org.usfirst.frc.team4913.robot.Robot;
 import org.usfirst.frc.team4913.robot.RobotMap;
 import org.usfirst.frc.team4913.robot.commands.Drive;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -37,8 +40,10 @@ public class DriveSubsystem extends Subsystem {
 
 	SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftFrontMotor, leftRearMotor);
 	SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightFrontMotor, rightRearMotor);
-
 	DifferentialDrive robotDrive = new DifferentialDrive(leftGroup, rightGroup);
+
+	DigitalInput dio7 = new DigitalInput(RobotMap.VISION_INPUT_7);
+	DigitalInput dio8 = new DigitalInput(RobotMap.VISION_INPUT_8);
 
 	public void initDefaultCommand() {
 		setDefaultCommand(new Drive());
@@ -48,15 +53,44 @@ public class DriveSubsystem extends Subsystem {
 		robotDrive.stopMotor();
 	}
 
+	/**
+	 * Drive autonomously based on the inputs from DIO
+	 * 
+	 * pin7 	pin8	action
+	 * ---
+	 * false	true	veer left
+	 * true		false	veer right
+	 * true 	true	straight
+	 * false	false	slow
+
+	 * @param leftInput
+	 * @param rightInput
+	 */
+	public void autoDrive() {
+		if (!dio7.get() && dio8.get()) {
+			arcadeDrive(0.0, 1.0); // turn left
+		}
+		else if (dio7.get() && !dio8.get()) {
+			arcadeDrive(0.0, -1.0); // turn right
+		}
+		else if (dio7.get() && dio8.get()) {
+			arcadeDrive(-0.5, 0.0); // forward half-speed
+		}
+		else if (!dio7.get() && !dio8.get()) {
+			arcadeDrive(-0.25, 0.0); // forward quarter-speed
+		}
+		Timer.delay(1);		
+	}
+
 	public void arcadeDrive() {
-		yControllerInput = OI.controller.getY(Hand.kLeft);
+		yControllerInput = OI.XboxController.getY(Hand.kLeft);
 		yDiff = yControllerInput - ySpeed;
 		scaledYDiff = yDiff * ySpeedScale;
 		ySpeed += scaledYDiff;
-		robotDrive.arcadeDrive(ySpeed, -OI.controller.getX(Hand.kLeft));
+		robotDrive.arcadeDrive(ySpeed, -OI.XboxController.getX(Hand.kLeft));
 	}
 
-	public void acradeDrive(double ySpeed, double xSpeed) {
+	public void arcadeDrive(double ySpeed, double xSpeed) {
 		robotDrive.arcadeDrive(ySpeed, xSpeed);
 	}
 }

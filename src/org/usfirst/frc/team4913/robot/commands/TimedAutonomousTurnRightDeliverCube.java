@@ -31,15 +31,15 @@ public class TimedAutonomousTurnRightDeliverCube extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		if (timer.get() < 1) {
-			Robot.driveSubsystem.acradeDrive(-1.0, 0.0); // forward
+			Robot.driveSubsystem.arcadeDrive(-1.0, 0.0); // forward
 		} else if (timer.get() >= 1 && timer.get() < 2) {
-			Robot.driveSubsystem.acradeDrive(0.0, -1.0); // turn right
+			Robot.driveSubsystem.arcadeDrive(0.0, -1.0); // turn right
 		}  else if (timer.get() >= 2 && timer.get() < 4) {
-			Robot.driveSubsystem.acradeDrive(-1.0, 0.0); // 2nd forward
+			Robot.driveSubsystem.arcadeDrive(-1.0, 0.0); // 2nd forward
 		}else if (timer.get() >= 4 && timer.get() < 5) {
-			Robot.driveSubsystem.acradeDrive(0.0, 1.0); // turn left
+			Robot.driveSubsystem.arcadeDrive(0.0, 1.0); // turn left
 		} else if (timer.get() >= 5 && timer.get() < 6) {
-			Robot.driveSubsystem.acradeDrive(-1.0, 0.0); // 3nd forward
+			Robot.driveSubsystem.arcadeDrive(-1.0, 0.0); // 3nd forward
 		} else if (timer.get() >= 6 && timer.get() < 7) 
 			Robot.grabbersbusytem.releaseBlock();
 		else

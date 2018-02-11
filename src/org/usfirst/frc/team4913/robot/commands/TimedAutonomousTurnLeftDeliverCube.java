@@ -29,19 +29,24 @@ public class TimedAutonomousTurnLeftDeliverCube extends Command {
 	}
 
 	protected void execute() {
-		if (timer.get() < 1) {
-			Robot.driveSubsystem.acradeDrive(-1.0, 0.0); // forward
-		} else if (timer.get() >= 1 && timer.get() < 2) {
-			Robot.driveSubsystem.acradeDrive(0.0, 1.0); // turn left
-		}  else if (timer.get() >= 2 && timer.get() < 4) {
-			Robot.driveSubsystem.acradeDrive(-1.0, 0.0); // 2nd forward
-		}else if (timer.get() >= 4 && timer.get() < 5) {
-			Robot.driveSubsystem.acradeDrive(0.0, -1.0); // turn right
-		} else if (timer.get() >= 5 && timer.get() < 6) {
-			Robot.driveSubsystem.acradeDrive(-1.0, 0.0); // 3nd forward
-		} else if (timer.get() >= 6 && timer.get() < 7) 
+		while(timer.get() < 1) {
+			Robot.driveSubsystem.arcadeDrive(-1.0, 0.0); // forward
+		}
+		while(timer.get() >= 1 && timer.get() < 2) {
+			Robot.driveSubsystem.arcadeDrive(0.0, 1.0); // turn left
+		}
+		while(timer.get() >= 2 && timer.get() < 4) {
+			Robot.driveSubsystem.arcadeDrive(-1.0, 0.0); // 2nd forward
+		}
+		while(timer.get() >= 4 && timer.get() < 5) {
+			Robot.driveSubsystem.arcadeDrive(0.0, -1.0); // turn right
+		}
+		while(timer.get() >= 5 && timer.get() < 13) {
+			Robot.driveSubsystem.autoDrive();
+		}
+		while(timer.get() >= 13 && timer.get() < 15) {
 			Robot.grabbersbusytem.releaseBlock();
-		else
+		}
 			isFinished = true;
 		
 	}

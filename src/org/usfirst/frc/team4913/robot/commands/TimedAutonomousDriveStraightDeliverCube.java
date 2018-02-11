@@ -32,7 +32,7 @@ public class TimedAutonomousDriveStraightDeliverCube extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		if (timer.get() < 5) {
-			Robot.driveSubsystem.acradeDrive(-1.0, 0.0); // forward
+			Robot.driveSubsystem.arcadeDrive(-1.0, 0.0); // forward
 		} else if (timer.get() >= 5 && timer.get() < 6) 
 			Robot.grabbersbusytem.releaseBlock();
 		else

@@ -23,8 +23,9 @@ public class RobotMap {
 
 	public static int GRABBER_MOTOR_PORT = 4;
 
-	public static int VISION_INPUT_1 = 7;
-	public static int VISION_INPUT_2 = 8;
+	public static int VISION_INPUT_7 = 7;
+	public static int VISION_INPUT_8 = 8;
 
 	public static int XBOX_CONTROLLER_PORT = 0;
+	public static int JOYSTICK_PORT = 1;
 }
