@@ -7,15 +7,22 @@ import org.usfirst.frc.team4913.robot.Robot;
 import static org.usfirst.frc.team4913.robot.Robot.driveSubsystem;
 import static org.usfirst.frc.team4913.robot.Robot.grabbersbusytem;
 
-@Deprecated
-public class TimedAutonomousTurnLeftDeliverCube extends Command {
+//import org.usfirst.frc.team4913.robot.TimedAutonomousTurnLeftDeliverCube;
+//import org.usfirst.frc.team4913.robot.TimedAutonomousTurnLeftDeliverCube;
+
+/**
+ *
+ */
+public class AutonomousTurnAndDeliverCube extends Command {
 
 	Timer timer = new Timer();
 	private boolean isFinished = false;
+	private Robot.TURN direction;
 
-	public TimedAutonomousTurnLeftDeliverCube(Robot.TURN turnDirection) {
+	public AutonomousTurnAndDeliverCube(Robot.TURN direction) {
 		requires(driveSubsystem);
 		requires(grabbersbusytem);
+		this.direction = direction;
 	}
 
 	// Called just before this Command runs the first time
@@ -25,26 +32,32 @@ public class TimedAutonomousTurnLeftDeliverCube extends Command {
 	}
 
 	protected void execute() {
-		while(timer.get() < 1) {
+		double timerVal = timer.get();
+		while(timerVal < 1) {
 			driveSubsystem.arcadeDrive(-1.0, 0.0); // forward
 		}
-		while(timer.get() >= 1 && timer.get() < 2) {
-			driveSubsystem.arcadeDrive(0.0, 1.0); // turn left
+		while(timerVal >= 1 && timerVal < 2) { // initial turn
+			if (direction == Robot.TURN.LEFT)
+				driveSubsystem.arcadeDrive(0.0, -1.0); // turn left
+			else
+				driveSubsystem.arcadeDrive(0.0, 1.0); // turn right
 		}
-		while(timer.get() >= 2 && timer.get() < 4) {
+		while(timerVal >= 2 && timerVal < 4) {
 			driveSubsystem.arcadeDrive(-1.0, 0.0); // 2nd forward
 		}
-		while(timer.get() >= 4 && timer.get() < 5) {
-			driveSubsystem.arcadeDrive(0.0, -1.0); // turn right
+		while(timerVal >= 4 && timerVal < 5) { // turn back facing switch
+			if (direction == Robot.TURN.LEFT)
+				driveSubsystem.arcadeDrive(0.0, 1.0); // turn right
+			else
+				driveSubsystem.arcadeDrive(0.0, -1.0); // turn left
 		}
-		while(timer.get() >= 5 && timer.get() < 13) {
+		while(timerVal >= 5 && timerVal < 13) {
 			driveSubsystem.autoDrive();
 		}
-		while(timer.get() >= 13 && timer.get() < 15) {
+		while(timerVal >= 13 && timerVal < 15) {
 			grabbersbusytem.releaseBlock();
 		}
-			isFinished = true;
-		
+		isFinished = true;
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -61,5 +74,6 @@ public class TimedAutonomousTurnLeftDeliverCube extends Command {
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
+		end();
 	}
 }

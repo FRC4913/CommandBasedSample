@@ -7,6 +7,9 @@ import org.usfirst.frc.team4913.robot.Robot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
+import static org.usfirst.frc.team4913.robot.Robot.driveSubsystem;
+import static org.usfirst.frc.team4913.robot.Robot.grabbersbusytem;
+
 /**
  *
  */
@@ -16,10 +19,8 @@ public class TimedAutonomousDriveStraightDeliverCube extends Command {
 	private boolean isFinished = false;
 
 	public TimedAutonomousDriveStraightDeliverCube() {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
-		requires(Robot.driveSubsystem);
-		requires(Robot.grabbersbusytem);
+		requires(driveSubsystem);
+		requires(grabbersbusytem);
 
 	}
 
@@ -32,9 +33,9 @@ public class TimedAutonomousDriveStraightDeliverCube extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		if (timer.get() < 5) {
-			Robot.driveSubsystem.arcadeDrive(-1.0, 0.0); // forward
-		} else if (timer.get() >= 5 && timer.get() < 6) 
-			Robot.grabbersbusytem.releaseBlock();
+			driveSubsystem.arcadeDrive(-1.0, 0.0); // forward
+		} else if (timer.get() >= 5 && timer.get() < 6)
+			grabbersbusytem.releaseBlock();
 		else
 			isFinished = true;
 		
@@ -47,8 +48,8 @@ public class TimedAutonomousDriveStraightDeliverCube extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.grabbersbusytem.stop();
-		Robot.driveSubsystem.stopMotor();
+		grabbersbusytem.stop();
+		driveSubsystem.stopMotor();
 	}
 
 	// Called when another command which requires one or more of the same

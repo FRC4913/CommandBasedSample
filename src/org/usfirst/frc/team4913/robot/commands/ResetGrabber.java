@@ -4,6 +4,8 @@ import org.usfirst.frc.team4913.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+import static org.usfirst.frc.team4913.robot.Robot.grabbersbusytem;
+
 /**
  *
  */
@@ -12,7 +14,7 @@ public class ResetGrabber extends Command {
     public ResetGrabber() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    		requires(Robot.grabbersbusytem);
+    		requires(grabbersbusytem);
     }
 
     // Called just before this Command runs the first time
@@ -21,7 +23,7 @@ public class ResetGrabber extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    		Robot.grabbersbusytem.stop();
+    		grabbersbusytem.stop();
     }
 
     // Make this return true when this Command no longer needs to run execute()

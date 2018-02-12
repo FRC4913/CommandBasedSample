@@ -4,6 +4,8 @@ import org.usfirst.frc.team4913.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+import static org.usfirst.frc.team4913.robot.Robot.grabbersbusytem;
+
 /**
  *
  */
@@ -12,7 +14,7 @@ public class GrabBlock extends Command {
 	public GrabBlock() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
-		requires(Robot.grabbersbusytem);
+		requires(grabbersbusytem);
 		setTimeout(2);
 	}
 
@@ -22,7 +24,7 @@ public class GrabBlock extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.grabbersbusytem.grabBlock();
+		grabbersbusytem.grabBlock();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -32,10 +34,12 @@ public class GrabBlock extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
+		grabbersbusytem.stop();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
+		end();
 	}
 }

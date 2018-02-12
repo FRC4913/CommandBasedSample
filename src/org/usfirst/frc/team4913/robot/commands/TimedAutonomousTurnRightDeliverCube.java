@@ -7,9 +7,10 @@ import org.usfirst.frc.team4913.robot.Robot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
+import static org.usfirst.frc.team4913.robot.Robot.driveSubsystem;
+import static org.usfirst.frc.team4913.robot.Robot.grabbersbusytem;
+
+@Deprecated
 public class TimedAutonomousTurnRightDeliverCube extends Command {
 
 	Timer timer = new Timer();
@@ -18,8 +19,8 @@ public class TimedAutonomousTurnRightDeliverCube extends Command {
 	public TimedAutonomousTurnRightDeliverCube() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
-		requires(Robot.driveSubsystem);
-		requires(Robot.grabbersbusytem);
+		requires(driveSubsystem);
+		requires(grabbersbusytem);
 	}
 
 	// Called just before this Command runs the first time
@@ -31,17 +32,17 @@ public class TimedAutonomousTurnRightDeliverCube extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		if (timer.get() < 1) {
-			Robot.driveSubsystem.arcadeDrive(-1.0, 0.0); // forward
+			driveSubsystem.arcadeDrive(-1.0, 0.0); // forward
 		} else if (timer.get() >= 1 && timer.get() < 2) {
-			Robot.driveSubsystem.arcadeDrive(0.0, -1.0); // turn right
+			driveSubsystem.arcadeDrive(0.0, -1.0); // turn right
 		}  else if (timer.get() >= 2 && timer.get() < 4) {
-			Robot.driveSubsystem.arcadeDrive(-1.0, 0.0); // 2nd forward
+			driveSubsystem.arcadeDrive(-1.0, 0.0); // 2nd forward
 		}else if (timer.get() >= 4 && timer.get() < 5) {
-			Robot.driveSubsystem.arcadeDrive(0.0, 1.0); // turn left
+			driveSubsystem.arcadeDrive(0.0, 1.0); // turn left
 		} else if (timer.get() >= 5 && timer.get() < 6) {
-			Robot.driveSubsystem.arcadeDrive(-1.0, 0.0); // 3nd forward
-		} else if (timer.get() >= 6 && timer.get() < 7) 
-			Robot.grabbersbusytem.releaseBlock();
+			driveSubsystem.arcadeDrive(-1.0, 0.0); // 3nd forward
+		} else if (timer.get() >= 6 && timer.get() < 7)
+			grabbersbusytem.releaseBlock();
 		else
 			isFinished = true;
 		
@@ -54,8 +55,8 @@ public class TimedAutonomousTurnRightDeliverCube extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.grabbersbusytem.stop();
-		Robot.driveSubsystem.stopMotor();
+		grabbersbusytem.stop();
+		driveSubsystem.stopMotor();
 	}
 
 	// Called when another command which requires one or more of the same

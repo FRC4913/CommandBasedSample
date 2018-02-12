@@ -14,11 +14,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4913.robot.commands.Drive;
-import org.usfirst.frc.team4913.robot.commands.TimedAutonomousDriveStraightDeliverCube;
-import org.usfirst.frc.team4913.robot.commands.TimedAutonomousDriveStraightNoCube;
-import org.usfirst.frc.team4913.robot.commands.TimedAutonomousTurnLeftDeliverCube;
-import org.usfirst.frc.team4913.robot.commands.TimedAutonomousTurnRightDeliverCube;
+import org.usfirst.frc.team4913.robot.commands.*;
 import org.usfirst.frc.team4913.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team4913.robot.subsystems.GrabberSubsystem;
 
@@ -39,6 +35,12 @@ public class Robot extends TimedRobot {
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+	public enum TURN {
+		LEFT,
+		RIGHT;
+	}
+
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -98,9 +100,9 @@ public class Robot extends TimedRobot {
 			m_autonomousCommand = new TimedAutonomousDriveStraightDeliverCube();
 		} else if (robotPosition == 2) {
 			if (gameData.charAt(0) == 'L') {
-				m_autonomousCommand = new TimedAutonomousTurnLeftDeliverCube();
+				m_autonomousCommand = new AutonomousTurnAndDeliverCube(TURN.LEFT);
 			} else if (gameData.charAt(0) == 'R') {
-				m_autonomousCommand = new TimedAutonomousTurnRightDeliverCube();
+				m_autonomousCommand = new AutonomousTurnAndDeliverCube(TURN.RIGHT);
 			}
 		} else {
 			//driveStraightNoCube = true;
