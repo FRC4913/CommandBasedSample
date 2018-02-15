@@ -15,8 +15,12 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4913.robot.commands.*;
+import org.usfirst.frc.team4913.robot.subsystems.ActuatorSubsystem;
+import org.usfirst.frc.team4913.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team4913.robot.subsystems.DriveSubsystem;
-import org.usfirst.frc.team4913.robot.subsystems.GrabberSubsystem;
+import org.usfirst.frc.team4913.robot.subsystems.LifterSubsystem;
+import org.usfirst.frc.team4913.robot.subsystems.IntakerSubsystem;
+import org.usfirst.frc.team4913.robot.subsystems.RotatorSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -30,7 +34,11 @@ public class Robot extends TimedRobot {
 	Preferences prefs;
 	public static final DriveSubsystem driveSubsystem
 			= new DriveSubsystem();
-	public static final GrabberSubsystem grabbersbusytem = new GrabberSubsystem();
+	public static final IntakerSubsystem intakerSubsystem = new IntakerSubsystem();
+	public static final RotatorSubsystem rotaterSubsystem = new RotatorSubsystem();
+	public static final ActuatorSubsystem actuatorSubsystem = new ActuatorSubsystem();
+	public static final LifterSubsystem lifterSubsystem = new LifterSubsystem();
+	public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
 	public static OI m_oi;
 
 	Command m_autonomousCommand;
@@ -38,7 +46,13 @@ public class Robot extends TimedRobot {
 
 	public enum TURN {
 		LEFT,
-		RIGHT;
+		RIGHT,
+		STRAIGHT;
+	}
+	
+	public enum DELIVERCUBE {
+		YES,
+		NO;
 	}
 
 
@@ -97,16 +111,16 @@ public class Robot extends TimedRobot {
 		if ((robotPosition == 1 && gameData.charAt(0) == 'L') || (robotPosition == 3 && gameData.charAt(0) == 'R')) {
 			// we're in corner position and switch is our side
 			//driveStraightDeliverCube = true;
-			m_autonomousCommand = new TimedAutonomousDriveStraightDeliverCube();
+			m_autonomousCommand = new Autonomous(TURN.STRAIGHT, DELIVERCUBE.YES);
 		} else if (robotPosition == 2) {
 			if (gameData.charAt(0) == 'L') {
-				m_autonomousCommand = new AutonomousTurnAndDeliverCube(TURN.LEFT);
+				m_autonomousCommand = new Autonomous(TURN.LEFT, DELIVERCUBE.YES);
 			} else if (gameData.charAt(0) == 'R') {
-				m_autonomousCommand = new AutonomousTurnAndDeliverCube(TURN.RIGHT);
+				m_autonomousCommand = new Autonomous(TURN.RIGHT, DELIVERCUBE.YES);
 			}
 		} else {
 			//driveStraightNoCube = true;
-			m_autonomousCommand = new TimedAutonomousDriveStraightNoCube();
+			m_autonomousCommand = new Autonomous(TURN.STRAIGHT, DELIVERCUBE.NO);
 		}
 		
 		

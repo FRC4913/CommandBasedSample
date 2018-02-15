@@ -7,9 +7,13 @@
 
 package org.usfirst.frc.team4913.robot;
 
-import org.usfirst.frc.team4913.robot.commands.GrabBlock;
-import org.usfirst.frc.team4913.robot.commands.ReleaseBlock;
-import org.usfirst.frc.team4913.robot.commands.ResetGrabber;
+import org.usfirst.frc.team4913.robot.commands.IntakeBlock;
+import org.usfirst.frc.team4913.robot.commands.LowerLifter;
+import org.usfirst.frc.team4913.robot.commands.RaiseLifter;
+import org.usfirst.frc.team4913.robot.commands.GrabberControls;
+import org.usfirst.frc.team4913.robot.commands.ShootBlock;
+import org.usfirst.frc.team4913.robot.commands.StopLifter;
+import org.usfirst.frc.team4913.robot.commands.StopIntaker;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -32,21 +36,23 @@ public class OI {
 
 	public static Joystick Joystick = new Joystick(RobotMap.JOYSTICK_PORT);
 
-	// button 3 is X on xbox controller
-	public Button xButton = new JoystickButton(XboxController, 3);
+	// button 4 is y on xbox controller
+	public Button yButton = new JoystickButton(XboxController, 4);
 
 	// button 1 is A on xbox controller
 	public Button aButton = new JoystickButton(XboxController, 1);
+	
+	//JoyStick Button 2
 
 	// There are a few additional built in buttons you can use. Additionally,
 	// by subclassing Button you can create custom triggers and bind those to
 	// commands the same as any other Button.
 
 	public OI() {
-		xButton.whenPressed(new ReleaseBlock()); // Release the cube when X is pressed
-		xButton.whenReleased(new ResetGrabber());
-		aButton.whenPressed(new GrabBlock()); // Grab the cube when A is pressed
-		aButton.whenReleased(new ResetGrabber());
+		yButton.whenPressed(new RaiseLifter()); // Raise the Lifter when the Y button of the xboxController is Pressed
+		yButton.whenReleased(new StopLifter());
+		aButton.whenPressed(new LowerLifter()); // Lower the Lifter when the A button of the xboxController is Pressed
+		aButton.whenReleased(new StopLifter());
 	}
 
 	//// TRIGGERING COMMANDS WITH BUTTONS

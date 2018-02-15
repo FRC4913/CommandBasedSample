@@ -3,9 +3,9 @@ package org.usfirst.frc.team4913.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4913.robot.Robot;
+import org.usfirst.frc.team4913.robot.subsystems.IntakerSubsystem;
 
 import static org.usfirst.frc.team4913.robot.Robot.driveSubsystem;
-import static org.usfirst.frc.team4913.robot.Robot.grabbersbusytem;
 
 //import org.usfirst.frc.team4913.robot.TimedAutonomousTurnLeftDeliverCube;
 //import org.usfirst.frc.team4913.robot.TimedAutonomousTurnLeftDeliverCube;
@@ -13,15 +13,15 @@ import static org.usfirst.frc.team4913.robot.Robot.grabbersbusytem;
 /**
  *
  */
-public class AutonomousTurnAndDeliverCube extends Command {
+public class AutonomousDrive extends Command {
 
 	Timer timer = new Timer();
 	private boolean isFinished = false;
 	private Robot.TURN direction;
 
-	public AutonomousTurnAndDeliverCube(Robot.TURN direction) {
-		requires(driveSubsystem);
-		requires(grabbersbusytem);
+	public AutonomousDrive(Robot.TURN direction) {
+		requires(Robot.driveSubsystem);
+		requires(Robot.intakerSubsystem);
 		this.direction = direction;
 	}
 
@@ -33,31 +33,37 @@ public class AutonomousTurnAndDeliverCube extends Command {
 
 	protected void execute() {
 		double timerVal = timer.get();
-		while(timerVal < 1) {
+		if(timerVal < 1) {
 			driveSubsystem.arcadeDrive(-1.0, 0.0); // forward
 		}
-		while(timerVal >= 1 && timerVal < 2) { // initial turn
+		if(timerVal >= 1 && timerVal < 2) { // initial turn
 			if (direction == Robot.TURN.LEFT)
 				driveSubsystem.arcadeDrive(0.0, -1.0); // turn left
-			else
+			else if (direction == Robot.TURN.RIGHT)
 				driveSubsystem.arcadeDrive(0.0, 1.0); // turn right
 		}
-		while(timerVal >= 2 && timerVal < 4) {
+		if(timerVal >= 2 && timerVal < 4) {
+			if (direction == Robot.TURN.LEFT || direction == Robot.TURN.RIGHT)
 			driveSubsystem.arcadeDrive(-1.0, 0.0); // 2nd forward
 		}
-		while(timerVal >= 4 && timerVal < 5) { // turn back facing switch
+		if(timerVal >= 4 && timerVal < 5) { // turn back facing switch
 			if (direction == Robot.TURN.LEFT)
 				driveSubsystem.arcadeDrive(0.0, 1.0); // turn right
-			else
+			else if (direction == Robot.TURN.RIGHT)
 				driveSubsystem.arcadeDrive(0.0, -1.0); // turn left
+			else if (direction == Robot.TURN.STRAIGHT) {
+				driveSubsystem.arcadeDrive(-1.0, 0.0); // keep going straight
+			}
 		}
-		while(timerVal >= 5 && timerVal < 13) {
+		if(timerVal >= 5) { //&& timerVal < 13) {
 			driveSubsystem.autoDrive();
 		}
-		while(timerVal >= 13 && timerVal < 15) {
-			grabbersbusytem.releaseBlock();
-		}
-		isFinished = true;
+//		if(timerVal >= 13 && timerVal < 15) {
+//			grabberSubsystem.releaseBlock();
+//		}
+//		if(timerVal > 15) {
+//		isFinished = true;
+//		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -67,7 +73,7 @@ public class AutonomousTurnAndDeliverCube extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		grabbersbusytem.stop();
+		Robot.intakerSubsystem.stop();
 		driveSubsystem.stopMotor();
 	}
 

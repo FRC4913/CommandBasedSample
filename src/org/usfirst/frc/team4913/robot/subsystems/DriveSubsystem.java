@@ -27,9 +27,9 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 public class DriveSubsystem extends Subsystem {
 
 	double ySpeed = 0;
-	double yControllerInput;
-	double scaledYcontrollerInput;
-	double ySpeedScale = 0.01;// placeholder
+	double yJoystickInput;
+	double scaledyJoystickInput;
+	double ySpeedScale = 0.05;// placeholder
 	double yDiff;
 	double scaledYDiff;
 
@@ -44,6 +44,7 @@ public class DriveSubsystem extends Subsystem {
 
 	DigitalInput dio7 = new DigitalInput(RobotMap.VISION_INPUT_7);
 	DigitalInput dio8 = new DigitalInput(RobotMap.VISION_INPUT_8);
+	DigitalInput dio9 = new DigitalInput(RobotMap.VISION_INPUT_9);
 
 	public void initDefaultCommand() {
 		setDefaultCommand(new Drive());
@@ -67,11 +68,16 @@ public class DriveSubsystem extends Subsystem {
 	 * @param rightInput
 	 */
 	public void autoDrive() {
-		if (!dio7.get() && dio8.get()) {
-			arcadeDrive(0.0, -1.0); // turn left
+		if(dio9.get()) {
+			stopMotor();
+		}
+		else if (!dio7.get() && dio8.get()) {
+			//arcadeDrive(0.0, -1.0); // turn left
+			veerLeft();
 		}
 		else if (dio7.get() && !dio8.get()) {
-			arcadeDrive(0.0, 1.0); // turn right
+			//arcadeDrive(0.0, 1.0); // turn right
+			veerRight();
 		}
 		else if (dio7.get() && dio8.get()) {
 			arcadeDrive(-0.5, 0.0); // forward half-speed
@@ -104,6 +110,7 @@ public class DriveSubsystem extends Subsystem {
 		while (time < driveTime + turnTime){
 			arcadeDrive(0.0, 1.0); // turn right
 		}
+		timer.stop();
 		System.out.println("finished veering left");
 	}
 
@@ -122,14 +129,15 @@ public class DriveSubsystem extends Subsystem {
 		else if (time < driveTime + turnTime){
 			arcadeDrive(0.0, -1.0); // turn left
 		}
+		timer.stop();
 	}
 
 	public void arcadeDrive() {
-		yControllerInput = OI.XboxController.getY(Hand.kLeft);
-		yDiff = yControllerInput - ySpeed;
+		yJoystickInput = OI.Joystick.getY();
+		yDiff = yJoystickInput - ySpeed;
 		scaledYDiff = yDiff * ySpeedScale;
 		ySpeed += scaledYDiff;
-		robotDrive.arcadeDrive(ySpeed, OI.XboxController.getX(Hand.kLeft));
+		robotDrive.arcadeDrive(ySpeed, -OI.Joystick.getX());
 	}
 
 	public void arcadeDrive(double ySpeed, double xSpeed) {

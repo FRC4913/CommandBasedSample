@@ -4,18 +4,15 @@ import org.usfirst.frc.team4913.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-import static org.usfirst.frc.team4913.robot.Robot.grabbersbusytem;
-
 /**
  *
  */
-public class GrabBlock extends Command {
+public class ShootBlock extends Command {
 
-	public GrabBlock() {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
-		requires(grabbersbusytem);
-		setTimeout(2);
+    public ShootBlock() {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+    		requires(Robot.intakerSubsystem);
 	}
 
 	// Called just before this Command runs the first time
@@ -24,17 +21,17 @@ public class GrabBlock extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		grabbersbusytem.grabBlock();
+		Robot.intakerSubsystem.releaseBlock();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return isTimedOut();
+		return false;
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
-		grabbersbusytem.stop();
+		Robot.intakerSubsystem.stop();
 	}
 
 	// Called when another command which requires one or more of the same
