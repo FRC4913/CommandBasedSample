@@ -10,6 +10,7 @@ package org.usfirst.frc.team4913.robot;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -162,6 +163,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		SmartDashboard.putNumber("left trigger", OI.XboxController.getTriggerAxis(Hand.kLeft));
+		SmartDashboard.putNumber("right trigger", OI.XboxController.getTriggerAxis(Hand.kRight));
+		SmartDashboard.putNumber("left button", OI.XboxController.getY(Hand.kLeft));
+		SmartDashboard.putNumber("right button", OI.XboxController.getY(Hand.kRight));
 	}
 
 	/**

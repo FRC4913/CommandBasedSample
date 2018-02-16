@@ -25,8 +25,8 @@ public class RobotMap {
 	
 
 	// Motor controllers connected to the PWM ports
-	public static int ACTUATOR_MOTOR_PORT = 1; // Victor SP MotorController
-	public static int ELEVATOR_MOTOR_PORT = 0; // SPARK MotorController
+	public static int ACTUATOR_MOTOR_PORT = 0; // Victor SP MotorController
+	public static int ELEVATOR_MOTOR_PORT = 1; // SPARK MotorController
 	
 
 	public static int VISION_INPUT_7 = 7;

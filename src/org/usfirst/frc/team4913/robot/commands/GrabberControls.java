@@ -44,10 +44,10 @@ public class GrabberControls extends Command {
     		//Actuator --- Push up the Rotator and Intaker for shooting cubes
     		if(OI.XboxController.getTriggerAxis(Hand.kLeft) > 0.1) {
     			Robot.actuatorSubsystem.actuatorPull(OI.XboxController.getTriggerAxis(Hand.kLeft)); // Left Trigger contract the length of the Actuator
-    		}else if(OI.XboxController.getTriggerAxis(Hand.kRight) < -0.1) {
+    		}else if(OI.XboxController.getTriggerAxis(Hand.kRight) > 0.1) {
     			Robot.actuatorSubsystem.actuatorPush(OI.XboxController.getTriggerAxis(Hand.kRight)); // Right Trigger expand the length of the Actuator
     		}else if(Math.abs(OI.XboxController.getTriggerAxis(Hand.kRight)) < 0.1 && Math.abs(OI.XboxController.getTriggerAxis(Hand.kLeft)) < 0.1) {
-    			Robot.rotaterSubsystem.stopRotating();
+    			Robot.actuatorSubsystem.actuatorStop();
     		}
     		
     		//Lifter is in the OI.Java declared at the buttons. --- Adjust Up or Down of the whole robot's grabberSystem.
