@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  *
  */
-public class LifterSubsystem extends Subsystem {
+public class Elevator extends Subsystem {
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -24,15 +24,15 @@ public class LifterSubsystem extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     
-    public void Up() {
+    public void up() {
     	elevatorMotor.set(LIFTER_UP_SPEED);
     }
     
-    public void Down() {
+    public void down() {
     	elevatorMotor.set(LIFTER_DOWN_SPEED);
     }
     
-    public void Stop() {
+    public void stop() {
     	elevatorMotor.set(0);
     }
 }

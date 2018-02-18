@@ -15,8 +15,8 @@ public class AutonomousPrepareGrabber extends Command {
         // eg. requires(chassis);
     		requires(Robot.intakerSubsystem);
     		requires(Robot.rotaterSubsystem);
-    		requires(Robot.actuatorSubsystem);
-    		requires(Robot.lifterSubsystem);
+    		requires(Robot.actuator);
+    		requires(Robot.elevator);
     }
 
     // Called just before this Command runs the first time

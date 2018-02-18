@@ -16,10 +16,10 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4913.robot.commands.*;
-import org.usfirst.frc.team4913.robot.subsystems.ActuatorSubsystem;
+import org.usfirst.frc.team4913.robot.subsystems.Actuator;
 import org.usfirst.frc.team4913.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team4913.robot.subsystems.DriveSubsystem;
-import org.usfirst.frc.team4913.robot.subsystems.LifterSubsystem;
+import org.usfirst.frc.team4913.robot.subsystems.Elevator;
 import org.usfirst.frc.team4913.robot.subsystems.IntakerSubsystem;
 import org.usfirst.frc.team4913.robot.subsystems.RotatorSubsystem;
 
@@ -37,8 +37,8 @@ public class Robot extends TimedRobot {
 			= new DriveSubsystem();
 	public static final IntakerSubsystem intakerSubsystem = new IntakerSubsystem();
 	public static final RotatorSubsystem rotaterSubsystem = new RotatorSubsystem();
-	public static final ActuatorSubsystem actuatorSubsystem = new ActuatorSubsystem();
-	public static final LifterSubsystem lifterSubsystem = new LifterSubsystem();
+	public static final Actuator actuator = new Actuator();
+	public static final Elevator elevator = new Elevator();
 	public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
 	public static OI m_oi;
 
@@ -67,6 +67,11 @@ public class Robot extends TimedRobot {
 		m_chooser.addDefault("Default Auto", new Drive());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
+		SmartDashboard.putData(elevator);
+		SmartDashboard.putData(actuator);
+		SmartDashboard.putData("ElevatorDown", new ElevatorDown());
+		SmartDashboard.putData("ElevatorUp", new ElevatorUp());
+		SmartDashboard.putData("ActuatorMove", new ActuatorMove());
 		prefs = Preferences.getInstance();
 	}
 
@@ -163,10 +168,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		SmartDashboard.putNumber("left trigger", OI.XboxController.getTriggerAxis(Hand.kLeft));
-		SmartDashboard.putNumber("right trigger", OI.XboxController.getTriggerAxis(Hand.kRight));
-		SmartDashboard.putNumber("left button", OI.XboxController.getY(Hand.kLeft));
-		SmartDashboard.putNumber("right button", OI.XboxController.getY(Hand.kRight));
+		SmartDashboard.putNumber("left trigger", OI.xboxController.getTriggerAxis(Hand.kLeft));
+		SmartDashboard.putNumber("right trigger", OI.xboxController.getTriggerAxis(Hand.kRight));
+		SmartDashboard.putNumber("left button", OI.xboxController.getY(Hand.kLeft));
+		SmartDashboard.putNumber("right button", OI.xboxController.getY(Hand.kRight));
 	}
 
 	/**

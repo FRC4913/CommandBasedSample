@@ -1,18 +1,19 @@
 package org.usfirst.frc.team4913.robot.commands;
 
-import org.usfirst.frc.team4913.robot.Robot;
+import static org.usfirst.frc.team4913.robot.Robot.elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class RaiseLifter extends Command {
+public class ElevatorUp extends Command {
 
-    public RaiseLifter() {
+    public ElevatorUp() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    		requires(Robot.lifterSubsystem);
+    	super("ElevatorUp");
+    	requires(elevator);
     }
 
     // Called just before this Command runs the first time
@@ -21,20 +22,22 @@ public class RaiseLifter extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    		Robot.lifterSubsystem.Up();
+    		elevator.up();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+    	return false;
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	elevator.stop();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	end();
     }
 }

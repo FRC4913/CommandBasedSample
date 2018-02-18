@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
+@Deprecated
 public class GrabberControls extends Command {
 
     public GrabberControls() {
@@ -26,29 +27,29 @@ public class GrabberControls extends Command {
     protected void execute() {
     	
     		//Intaker --- spinning wheels at the front
-    		if(OI.XboxController.getY(Hand.kLeft) > 0.1)
+    		if(OI.xboxController.getY(Hand.kLeft) > 0.1)
     			Robot.intakerSubsystem.grabBlock();  // Pull the left stick of XboxController to grabBlock using Intaker
-    		else if(OI.XboxController.getY(Hand.kLeft) < -0.1)
+    		else if(OI.xboxController.getY(Hand.kLeft) < -0.1)
     			Robot.intakerSubsystem.releaseBlock(); // Push the left stick of XboxController to ShootBlock using Intaker
-    		else if(Math.abs(OI.XboxController.getY(Hand.kLeft)) < 0.1)
+    		else if(Math.abs(OI.xboxController.getY(Hand.kLeft)) < 0.1)
     			Robot.intakerSubsystem.stop();
     		
     		//Rotator --- Arm that adjust the angle of the Intaker
-    		if(OI.XboxController.getY(Hand.kRight) > 0.1)
+    		if(OI.xboxController.getY(Hand.kRight) > 0.1)
             Robot.rotaterSubsystem.rotateInward(); // Pull the Right stick of XboxController Rotate Up the Rotator for pick up
-        	else if(OI.XboxController.getY(Hand.kRight) < -0.1)
+        	else if(OI.xboxController.getY(Hand.kRight) < -0.1)
         		Robot.rotaterSubsystem.rotateOutward(); // Push the Right stick of XboxController Rotate Down the Rotator for pick up
-        	else if(Math.abs(OI.XboxController.getY(Hand.kRight)) < 0.1)
+        	else if(Math.abs(OI.xboxController.getY(Hand.kRight)) < 0.1)
         		Robot.rotaterSubsystem.stopRotating();
     		
     		//Actuator --- Push up the Rotator and Intaker for shooting cubes
-    		if(OI.XboxController.getTriggerAxis(Hand.kLeft) > 0.1) {
-    			Robot.actuatorSubsystem.actuatorPull(OI.XboxController.getTriggerAxis(Hand.kLeft)); // Left Trigger contract the length of the Actuator
-    		}else if(OI.XboxController.getTriggerAxis(Hand.kRight) > 0.1) {
-    			Robot.actuatorSubsystem.actuatorPush(OI.XboxController.getTriggerAxis(Hand.kRight)); // Right Trigger expand the length of the Actuator
-    		}else if(Math.abs(OI.XboxController.getTriggerAxis(Hand.kRight)) < 0.1 && Math.abs(OI.XboxController.getTriggerAxis(Hand.kLeft)) < 0.1) {
-    			Robot.actuatorSubsystem.actuatorStop();
-    		}
+    		/*if(OI.xboxController.getTriggerAxis(Hand.kLeft) > 0.1) {
+    			Robot.actuator.down(-OI.xboxController.getTriggerAxis(Hand.kLeft)); // Left Trigger contract the length of the Actuator
+    		}else if(OI.xboxController.getTriggerAxis(Hand.kRight) > 0.1) {
+    			Robot.actuator.move(OI.xboxController.getTriggerAxis(Hand.kRight)); // Right Trigger expand the length of the Actuator
+    		}else if(Math.abs(OI.xboxController.getTriggerAxis(Hand.kRight)) < 0.1 && Math.abs(OI.xboxController.getTriggerAxis(Hand.kLeft)) < 0.1) {
+    			Robot.actuator.stop();
+    		}*/
     		
     		//Lifter is in the OI.Java declared at the buttons. --- Adjust Up or Down of the whole robot's grabberSystem.
     }
