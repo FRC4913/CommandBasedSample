@@ -16,7 +16,7 @@ public class GrabberControls extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     		requires(Robot.intakerSubsystem);
-    		requires(Robot.rotaterSubsystem);
+    		//requires(Robot.rotator);
     }
 
     // Called just before this Command runs the first time
@@ -35,12 +35,12 @@ public class GrabberControls extends Command {
     			Robot.intakerSubsystem.stop();
     		
     		//Rotator --- Arm that adjust the angle of the Intaker
-    		if(OI.xboxController.getY(Hand.kRight) > 0.1)
-            Robot.rotaterSubsystem.rotateInward(); // Pull the Right stick of XboxController Rotate Up the Rotator for pick up
+    		/*if(OI.xboxController.getY(Hand.kRight) > 0.1)
+            Robot.rotator.rotateInward(); // Pull the Right stick of XboxController Rotate Up the Rotator for pick up
         	else if(OI.xboxController.getY(Hand.kRight) < -0.1)
-        		Robot.rotaterSubsystem.rotateOutward(); // Push the Right stick of XboxController Rotate Down the Rotator for pick up
+        		Robot.rotator.rotateOutward(); // Push the Right stick of XboxController Rotate Down the Rotator for pick up
         	else if(Math.abs(OI.xboxController.getY(Hand.kRight)) < 0.1)
-        		Robot.rotaterSubsystem.stopRotating();
+        		Robot.rotator.stopRotating();*/
     		
     		//Actuator --- Push up the Rotator and Intaker for shooting cubes
     		/*if(OI.xboxController.getTriggerAxis(Hand.kLeft) > 0.1) {

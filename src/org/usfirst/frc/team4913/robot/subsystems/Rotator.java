@@ -1,17 +1,16 @@
 package org.usfirst.frc.team4913.robot.subsystems;
 
 import org.usfirst.frc.team4913.robot.RobotMap;
-import org.usfirst.frc.team4913.robot.commands.GrabberControls;
+import org.usfirst.frc.team4913.robot.commands.RotatorMove;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.Spark;
 
 /**
  *
  */
-public class RotatorSubsystem extends Subsystem {
+public class Rotator extends Subsystem {
 	///////// Rotator requires a motorController with an encoder
 
     // Put methods for controlling this subsystem
@@ -24,18 +23,14 @@ public class RotatorSubsystem extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-    	setDefaultCommand(new GrabberControls());
+    	setDefaultCommand(new RotatorMove());
     }
-    
-    public void rotateInward() {
-    	rotatorMotor.set(ROTATE_INWARD_SPEED);
+
+    public void move(double speed) {
+    	rotatorMotor.set(speed);
     }
-    
-    public void rotateOutward() {
-    	rotatorMotor.set(ROTATE_OUTWARD_SPEED);
-    }
-    
-    public void stopRotating() {
+
+    public void stop() {
     	rotatorMotor.set(0);
     }
 }
