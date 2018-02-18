@@ -7,13 +7,21 @@
 
 package org.usfirst.frc.team4913.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4913.robot.commands.Drive;
+import org.usfirst.frc.team4913.robot.commands.*;
+import org.usfirst.frc.team4913.robot.subsystems.Actuator;
+import org.usfirst.frc.team4913.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team4913.robot.subsystems.DriveSubsystem;
+import org.usfirst.frc.team4913.robot.subsystems.Elevator;
+import org.usfirst.frc.team4913.robot.subsystems.IntakerSubsystem;
+import org.usfirst.frc.team4913.robot.subsystems.RotatorSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,12 +31,31 @@ import org.usfirst.frc.team4913.robot.subsystems.DriveSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
+	
+	Preferences prefs;
 	public static final DriveSubsystem driveSubsystem
 			= new DriveSubsystem();
+	public static final IntakerSubsystem intakerSubsystem = new IntakerSubsystem();
+	public static final RotatorSubsystem rotaterSubsystem = new RotatorSubsystem();
+	public static final Actuator actuator = new Actuator();
+	public static final Elevator elevator = new Elevator();
+	public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
 	public static OI m_oi;
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+	public enum TURN {
+		LEFT,
+		RIGHT,
+		STRAIGHT;
+	}
+	
+	public enum DELIVERCUBE {
+		YES,
+		NO;
+	}
+
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -40,6 +67,12 @@ public class Robot extends TimedRobot {
 		m_chooser.addDefault("Default Auto", new Drive());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
+		SmartDashboard.putData(elevator);
+		SmartDashboard.putData(actuator);
+		SmartDashboard.putData("ElevatorDown", new ElevatorDown());
+		SmartDashboard.putData("ElevatorUp", new ElevatorUp());
+		SmartDashboard.putData("ActuatorMove", new ActuatorMove());
+		prefs = Preferences.getInstance();
 	}
 
 	/**
@@ -70,8 +103,33 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autonomousCommand = m_chooser.getSelected();
+		//m_autonomousCommand = m_chooser.getSelected();
+//		m_autonomousCommand = new TimedAutonomousDriveStraightDeliverCube();
+//		m_autonomousCommand = new TimedAutonomousDriveStraightNoCube();
+		
+		
+		int robotPosition = prefs.getInt("robot position", 1);
+		SmartDashboard.putNumber("Robot Position", robotPosition);
+		
+		String gameData = DriverStation.getInstance().getGameSpecificMessage();
+		SmartDashboard.putString("Game Data", gameData);
 
+		if ((robotPosition == 1 && gameData.charAt(0) == 'L') || (robotPosition == 3 && gameData.charAt(0) == 'R')) {
+			// we're in corner position and switch is our side
+			//driveStraightDeliverCube = true;
+			m_autonomousCommand = new Autonomous(TURN.STRAIGHT, DELIVERCUBE.YES);
+		} else if (robotPosition == 2) {
+			if (gameData.charAt(0) == 'L') {
+				m_autonomousCommand = new Autonomous(TURN.LEFT, DELIVERCUBE.YES);
+			} else if (gameData.charAt(0) == 'R') {
+				m_autonomousCommand = new Autonomous(TURN.RIGHT, DELIVERCUBE.YES);
+			}
+		} else {
+			//driveStraightNoCube = true;
+			m_autonomousCommand = new Autonomous(TURN.STRAIGHT, DELIVERCUBE.NO);
+		}
+		
+		
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
 		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -110,6 +168,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		SmartDashboard.putNumber("left trigger", OI.xboxController.getTriggerAxis(Hand.kLeft));
+		SmartDashboard.putNumber("right trigger", OI.xboxController.getTriggerAxis(Hand.kRight));
+		SmartDashboard.putNumber("left button", OI.xboxController.getY(Hand.kLeft));
+		SmartDashboard.putNumber("right button", OI.xboxController.getY(Hand.kRight));
 	}
 
 	/**
