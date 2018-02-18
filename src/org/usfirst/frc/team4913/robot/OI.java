@@ -7,6 +7,8 @@
 
 package org.usfirst.frc.team4913.robot;
 
+import org.usfirst.frc.team4913.robot.commands.BlockIntake;
+import org.usfirst.frc.team4913.robot.commands.BlockRelease;
 import org.usfirst.frc.team4913.robot.commands.ElevatorDown;
 import org.usfirst.frc.team4913.robot.commands.ElevatorUp;
 
@@ -29,15 +31,21 @@ public class OI {
 	// Button button = new JoystickButton(stick, buttonNumber);
 	public static XboxController xboxController = new XboxController(RobotMap.XBOX_CONTROLLER_PORT);
 
-	public static Joystick Joystick = new Joystick(RobotMap.JOYSTICK_PORT);
+	public static Joystick joystick = new Joystick(RobotMap.JOYSTICK_PORT);
 
 	// button 4 is y on xbox controller
 	public Button yButton = new JoystickButton(xboxController, 4);
 
 	// button 1 is A on xbox controller
 	public Button aButton = new JoystickButton(xboxController, 1);
-	
-	//JoyStick Button 2
+
+	// left and right bumpers
+	public Button xboxButton5 = new JoystickButton(xboxController, 5);
+	public Button xboxButton6 = new JoystickButton(xboxController, 6);
+
+	public Button joystickRelease = new JoystickButton(joystick, 1);
+	public Button joystickHookUp = new JoystickButton(joystick, 3);
+	public Button joystickClimb = new JoystickButton(joystick, 2);
 
 	// There are a few additional built in buttons you can use. Additionally,
 	// by subclassing Button you can create custom triggers and bind those to
@@ -46,6 +54,12 @@ public class OI {
 	public OI() {
 		yButton.whileHeld(new ElevatorUp());
 		aButton.whileHeld(new ElevatorDown()); // Lower the Lifter when the A button of the xboxController is Pressed
+		
+		xboxButton5.whileHeld(new BlockIntake());
+		xboxButton6.whileHeld(new BlockIntake());
+		joystickRelease.whileHeld(new BlockRelease());
+		/*xboxButton5.toggleWhenActive(new BlockIntake());
+		xboxButton6.toggleWhenActive(new BlockIntake());*/
 	}
 
 	//// TRIGGERING COMMANDS WITH BUTTONS

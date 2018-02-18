@@ -22,9 +22,10 @@ public class RobotMap {
 	public static int LEFT_FRONT_MOTOR_PORT = 3;
 
 	// Rotator/Intaker (aka Grabber) ports
-	public static int ROTATOR_MOTOR_PORT = 4; // Rotator need to use encoder
-	public static int INTAKER_MOTOR_PORT = 5; // Not sure which MotorController to use
+	public static int ROTATOR_MOTOR_PORT = 5; // Rotator need to use encoder
+	public static int INTAKER_MOTOR_PORT = 4; // Not sure which MotorController to use
 
+	//public static int 
 	// Motor controllers connected to the PWM ports
 	public static int ACTUATOR_MOTOR_PORT = 0; // Spark MotorController
 	public static int ELEVATOR_MOTOR_PORT = 1; // SPARK MotorController

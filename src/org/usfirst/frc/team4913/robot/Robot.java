@@ -20,7 +20,7 @@ import org.usfirst.frc.team4913.robot.subsystems.Actuator;
 import org.usfirst.frc.team4913.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team4913.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team4913.robot.subsystems.Elevator;
-import org.usfirst.frc.team4913.robot.subsystems.IntakerSubsystem;
+import org.usfirst.frc.team4913.robot.subsystems.Intaker;
 import org.usfirst.frc.team4913.robot.subsystems.Rotator;
 
 /**
@@ -35,7 +35,7 @@ public class Robot extends TimedRobot {
 	Preferences prefs;
 	public static final DriveSubsystem driveSubsystem
 			= new DriveSubsystem();
-	public static final IntakerSubsystem intakerSubsystem = new IntakerSubsystem();
+	public static final Intaker intaker = new Intaker();
 	public static final Rotator rotator = new Rotator();
 	public static final Actuator actuator = new Actuator();
 	public static final Elevator elevator = new Elevator();
@@ -70,10 +70,13 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData(elevator);
 		SmartDashboard.putData(actuator);
 		SmartDashboard.putData(rotator);
+		SmartDashboard.putData(intaker);
 		SmartDashboard.putData("ElevatorDown", new ElevatorDown());
 		SmartDashboard.putData("ElevatorUp", new ElevatorUp());
 		SmartDashboard.putData("ActuatorMove", new ActuatorMove());
 		SmartDashboard.putData("RotatorMove", new RotatorMove());
+		SmartDashboard.putData("BlockIntake", new BlockIntake());
+		SmartDashboard.putData("BlockRelease", new BlockRelease());
 		prefs = Preferences.getInstance();
 	}
 
@@ -174,6 +177,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("right trigger", OI.xboxController.getTriggerAxis(Hand.kRight));
 		SmartDashboard.putNumber("left button", OI.xboxController.getY(Hand.kLeft));
 		SmartDashboard.putNumber("right button", OI.xboxController.getY(Hand.kRight));
+		SmartDashboard.putBoolean("joystick button1", OI.joystick.getTriggerPressed());
 	}
 
 	/**

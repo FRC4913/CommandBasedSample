@@ -13,7 +13,7 @@ public class AutonomousPrepareGrabber extends Command {
     public AutonomousPrepareGrabber() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    		requires(Robot.intakerSubsystem);
+    		requires(Robot.intaker);
     		requires(Robot.rotator);
     		requires(Robot.actuator);
     		requires(Robot.elevator);
