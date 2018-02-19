@@ -11,6 +11,9 @@ import org.usfirst.frc.team4913.robot.commands.BlockIntake;
 import org.usfirst.frc.team4913.robot.commands.BlockRelease;
 import org.usfirst.frc.team4913.robot.commands.ElevatorDown;
 import org.usfirst.frc.team4913.robot.commands.ElevatorUp;
+import org.usfirst.frc.team4913.robot.commands.HookDown;
+import org.usfirst.frc.team4913.robot.commands.HookUp;
+import org.usfirst.frc.team4913.robot.commands.RobotUp;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -43,7 +46,7 @@ public class OI {
 	public Button xboxButton5 = new JoystickButton(xboxController, 5);
 	public Button xboxButton6 = new JoystickButton(xboxController, 6);
 
-	public Button joystickRelease = new JoystickButton(joystick, 1);
+	//public Button joystickRelease = new JoystickButton(joystick, 1);
 	public Button joystickHookUp = new JoystickButton(joystick, 3);
 	public Button joystickClimb = new JoystickButton(joystick, 2);
 
@@ -54,12 +57,18 @@ public class OI {
 	public OI() {
 		yButton.whileHeld(new ElevatorUp());
 		aButton.whileHeld(new ElevatorDown()); // Lower the Lifter when the A button of the xboxController is Pressed
-		
+
 		xboxButton5.whileHeld(new BlockIntake());
 		xboxButton6.whileHeld(new BlockIntake());
-		joystickRelease.whileHeld(new BlockRelease());
-		/*xboxButton5.toggleWhenActive(new BlockIntake());
-		xboxButton6.toggleWhenActive(new BlockIntake());*/
+		//joystickRelease.whileHeld(new BlockRelease());
+
+		joystickHookUp.whileHeld(new HookUp());
+		joystickHookUp.whenReleased(new HookDown());
+		joystickClimb.whileHeld(new RobotUp());
+		/*
+		 * xboxButton5.toggleWhenActive(new BlockIntake());
+		 * xboxButton6.toggleWhenActive(new BlockIntake());
+		 */
 	}
 
 	//// TRIGGERING COMMANDS WITH BUTTONS

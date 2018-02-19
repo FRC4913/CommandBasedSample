@@ -23,11 +23,7 @@ public class Actuator extends Subsystem {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
 		setDefaultCommand(new ActuatorMove());
-		/*try {
-			setDefaultCommand(new GrabberControls());
-		} catch (IllegalUseOfCommandException actuatorException) {
-			SmartDashboard.putString("actuator_Exception", actuatorException.getMessage());
-		}*/
+
 	}
 
 	public void move(double speed) {

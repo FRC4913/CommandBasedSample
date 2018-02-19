@@ -17,6 +17,7 @@ public class BlockRelease extends Command {
     	
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	super("BlockRelease");
     		requires(intaker);
 	}
 
@@ -28,7 +29,7 @@ public class BlockRelease extends Command {
 	protected void execute() {
 		if (xboxController.getTriggerAxis(Hand.kLeft) >= TRIGGER_THRESHOLD 
 				|| xboxController.getTriggerAxis(Hand.kRight) >= TRIGGER_THRESHOLD
-				|| joystick.getTriggerPressed()) {
+				|| joystick.getRawButton(1)) {
 			intaker.releaseBlock();
 		}
 	}
@@ -37,7 +38,7 @@ public class BlockRelease extends Command {
 	protected boolean isFinished() {
 		if (xboxController.getTriggerAxis(Hand.kLeft) < TRIGGER_THRESHOLD 
 				&& xboxController.getTriggerAxis(Hand.kRight) < TRIGGER_THRESHOLD
-				&& !joystick.getTriggerPressed()) {
+				&& !joystick.getRawButton(1)) {
 			return true;
 		}
 		return false;
