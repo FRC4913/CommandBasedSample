@@ -65,7 +65,8 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		m_oi = new OI();
 		m_chooser.addDefault("Default Auto", new Drive());
-		// chooser.addObject("My Auto", new MyAutoCommand());
+		m_chooser.addObject("StraightYes", new Autonomous(TURN.STRAIGHT, DELIVERCUBE.YES));
+		m_chooser.addObject("StraightNo", new Autonomous(TURN.STRAIGHT, DELIVERCUBE.NO));
 		SmartDashboard.putData("Auto mode", m_chooser);
 		SmartDashboard.putData(elevator);
 		SmartDashboard.putData(actuator);
@@ -113,21 +114,20 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		//m_autonomousCommand = m_chooser.getSelected();
-//		m_autonomousCommand = new TimedAutonomousDriveStraightDeliverCube();
-//		m_autonomousCommand = new TimedAutonomousDriveStraightNoCube();
-		
-		
-		int robotPosition = prefs.getInt("robot position", 1);
-		SmartDashboard.putNumber("Robot Position", robotPosition);
-		
+		int robotPosition = prefs.getInt("robotPosition", 1);
+		boolean useVision = prefs.getBoolean("useVision", true);
+		boolean deliverCube = prefs.getBoolean("deliverCube", true);
+
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		SmartDashboard.putString("Game Data", gameData);
+		SmartDashboard.putNumber("Robot Position", robotPosition);		
 
-		if ((robotPosition == 1 && gameData.charAt(0) == 'L') || (robotPosition == 3 && gameData.charAt(0) == 'R')) {
+		if ((robotPosition == 1 && gameData.charAt(0) == 'L') 
+				|| (robotPosition == 3 && gameData.charAt(0) == 'R')) {
 			// we're in corner position and switch is our side
-			//driveStraightDeliverCube = true;
-			m_autonomousCommand = new Autonomous(TURN.STRAIGHT, DELIVERCUBE.YES);
+			m_autonomousCommand = deliverCube ? 
+					new Autonomous(TURN.STRAIGHT, DELIVERCUBE.YES) : 
+						new Autonomous(TURN.STRAIGHT, DELIVERCUBE.NO);
 		} else if (robotPosition == 2) {
 			if (gameData.charAt(0) == 'L') {
 				m_autonomousCommand = new Autonomous(TURN.LEFT, DELIVERCUBE.YES);
@@ -138,19 +138,16 @@ public class Robot extends TimedRobot {
 			//driveStraightNoCube = true;
 			m_autonomousCommand = new Autonomous(TURN.STRAIGHT, DELIVERCUBE.NO);
 		}
-		
-		
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
+
+		// test code, remove
+		/*m_autonomousCommand = m_chooser.getSelected();
+		m_autonomousCommand.start();*/
 
 		// schedule the autonomous command (example)
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.start();
 		}
+		
 	}
 
 	/**

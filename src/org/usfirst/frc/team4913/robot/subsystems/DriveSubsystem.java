@@ -137,7 +137,7 @@ public class DriveSubsystem extends Subsystem {
 		yDiff = yJoystickInput - ySpeed;
 		scaledYDiff = yDiff * ySpeedScale;
 		ySpeed += scaledYDiff;
-		robotDrive.arcadeDrive(ySpeed, -OI.joystick.getX());
+		robotDrive.arcadeDrive(ySpeed, OI.joystick.getX());
 	}
 
 	public void arcadeDrive(double ySpeed, double xSpeed) {
