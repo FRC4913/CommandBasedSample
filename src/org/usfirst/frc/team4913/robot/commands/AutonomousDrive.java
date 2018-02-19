@@ -3,7 +3,7 @@ package org.usfirst.frc.team4913.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4913.robot.Robot;
-import org.usfirst.frc.team4913.robot.subsystems.IntakerSubsystem;
+import org.usfirst.frc.team4913.robot.subsystems.Intaker;
 
 import static org.usfirst.frc.team4913.robot.Robot.driveSubsystem;
 
@@ -21,7 +21,7 @@ public class AutonomousDrive extends Command {
 
 	public AutonomousDrive(Robot.TURN direction) {
 		requires(Robot.driveSubsystem);
-		requires(Robot.intakerSubsystem);
+		requires(Robot.intaker);
 		this.direction = direction;
 	}
 
@@ -73,7 +73,7 @@ public class AutonomousDrive extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.intakerSubsystem.stop();
+		Robot.intaker.stop();
 		driveSubsystem.stopMotor();
 	}
 

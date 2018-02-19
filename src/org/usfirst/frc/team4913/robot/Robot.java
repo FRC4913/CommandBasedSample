@@ -17,11 +17,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4913.robot.commands.*;
 import org.usfirst.frc.team4913.robot.subsystems.Actuator;
-import org.usfirst.frc.team4913.robot.subsystems.ClimberSubsystem;
+import org.usfirst.frc.team4913.robot.subsystems.Climber;
 import org.usfirst.frc.team4913.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team4913.robot.subsystems.Elevator;
-import org.usfirst.frc.team4913.robot.subsystems.IntakerSubsystem;
-import org.usfirst.frc.team4913.robot.subsystems.RotatorSubsystem;
+import org.usfirst.frc.team4913.robot.subsystems.Intaker;
+import org.usfirst.frc.team4913.robot.subsystems.Rotator;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -35,11 +35,11 @@ public class Robot extends TimedRobot {
 	Preferences prefs;
 	public static final DriveSubsystem driveSubsystem
 			= new DriveSubsystem();
-	public static final IntakerSubsystem intakerSubsystem = new IntakerSubsystem();
-	public static final RotatorSubsystem rotaterSubsystem = new RotatorSubsystem();
+	public static final Intaker intaker = new Intaker();
+	public static final Rotator rotator = new Rotator();
 	public static final Actuator actuator = new Actuator();
 	public static final Elevator elevator = new Elevator();
-	public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+	public static final Climber climber = new Climber();
 	public static OI m_oi;
 
 	Command m_autonomousCommand;
@@ -69,9 +69,19 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("Auto mode", m_chooser);
 		SmartDashboard.putData(elevator);
 		SmartDashboard.putData(actuator);
+		SmartDashboard.putData(rotator);
+		SmartDashboard.putData(intaker);
+		SmartDashboard.putData(climber);
+		SmartDashboard.putData(driveSubsystem);
 		SmartDashboard.putData("ElevatorDown", new ElevatorDown());
 		SmartDashboard.putData("ElevatorUp", new ElevatorUp());
 		SmartDashboard.putData("ActuatorMove", new ActuatorMove());
+		SmartDashboard.putData("RotatorMove", new RotatorMove());
+		SmartDashboard.putData("BlockIntake", new BlockIntake());
+		SmartDashboard.putData("BlockRelease", new BlockRelease());
+		SmartDashboard.putData("HookDown", new HookDown());
+		SmartDashboard.putData("HookUp", new HookUp());
+		SmartDashboard.putData("RobotUp", new RobotUp());
 		prefs = Preferences.getInstance();
 	}
 

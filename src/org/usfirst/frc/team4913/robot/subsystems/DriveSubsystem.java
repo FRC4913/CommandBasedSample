@@ -133,11 +133,11 @@ public class DriveSubsystem extends Subsystem {
 	}
 
 	public void arcadeDrive() {
-		yJoystickInput = OI.Joystick.getY();
+		yJoystickInput = OI.joystick.getY();
 		yDiff = yJoystickInput - ySpeed;
 		scaledYDiff = yDiff * ySpeedScale;
 		ySpeed += scaledYDiff;
-		robotDrive.arcadeDrive(ySpeed, -OI.Joystick.getX());
+		robotDrive.arcadeDrive(ySpeed, -OI.joystick.getX());
 	}
 
 	public void arcadeDrive(double ySpeed, double xSpeed) {

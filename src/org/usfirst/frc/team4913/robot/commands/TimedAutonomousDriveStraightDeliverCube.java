@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 import static org.usfirst.frc.team4913.robot.Robot.driveSubsystem;
-import static org.usfirst.frc.team4913.robot.Robot.intakerSubsystem;
+import static org.usfirst.frc.team4913.robot.Robot.intaker;
 
 /**
  *
@@ -20,7 +20,7 @@ public class TimedAutonomousDriveStraightDeliverCube extends Command {
 
 	public TimedAutonomousDriveStraightDeliverCube() {
 		requires(driveSubsystem);
-		requires(intakerSubsystem);
+		requires(intaker);
 
 	}
 
@@ -35,7 +35,7 @@ public class TimedAutonomousDriveStraightDeliverCube extends Command {
 		if (timer.get() < 5) {
 			driveSubsystem.arcadeDrive(-1.0, 0.0); // forward
 		} else if (timer.get() >= 5 && timer.get() < 6)
-			intakerSubsystem.releaseBlock();
+			intaker.releaseBlock();
 		else
 			isFinished = true;
 		
@@ -48,7 +48,7 @@ public class TimedAutonomousDriveStraightDeliverCube extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		intakerSubsystem.stop();
+		intaker.stop();
 		driveSubsystem.stopMotor();
 	}
 

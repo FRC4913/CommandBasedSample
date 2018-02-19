@@ -14,7 +14,7 @@ public class ActuatorMove extends Command {
     public ActuatorMove() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	super("ActuatorDown");
+    	super("ActuatorMove");
     	requires(actuator);
     }
 
