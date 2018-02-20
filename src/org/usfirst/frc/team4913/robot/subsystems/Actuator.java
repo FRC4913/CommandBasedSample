@@ -15,7 +15,6 @@ public class Actuator extends Subsystem {
 	// here. Call these from Commands.
 	// Left Trigger from 0 to 1
 	// Right Trigger from 0 to 1
-	
 
 	Spark actuatorMotor = new Spark(RobotMap.ACTUATOR_MOTOR_PORT);
 

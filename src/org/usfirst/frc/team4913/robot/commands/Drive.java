@@ -12,8 +12,7 @@ import static org.usfirst.frc.team4913.robot.Robot.driveSubsystem;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class Drive extends Command {
-	
-	
+
 	public Drive() {
 		requires(driveSubsystem);
 	}

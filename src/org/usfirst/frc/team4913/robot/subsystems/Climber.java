@@ -15,14 +15,13 @@ public class Climber extends Subsystem {
 	// here. Call these from Commands.
 	// Left Trigger from 0 to 1
 	// Right Trigger from 0 to 1
-	
 
 	WPI_TalonSRX num1Motor = new WPI_TalonSRX(RobotMap.CLIMBER_NUM1_MOTOR_PORT);
 	WPI_TalonSRX num2Motor = new WPI_TalonSRX(RobotMap.CLIMBER_NUM2_MOTOR_PORT);
 
 	public static double UP_SPEEDCONSTANT = 1.0;
 	public static double DOWN_SPEEDCONSTANT = -0.5;
-	
+
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
@@ -36,11 +35,11 @@ public class Climber extends Subsystem {
 	public void hookDown() {
 		num1Motor.set(DOWN_SPEEDCONSTANT);
 	}
-	
+
 	public void robotUp() {
 		num2Motor.set(UP_SPEEDCONSTANT);
 	}
-	
+
 	public void stop() {
 		num1Motor.set(0);
 		num2Motor.set(0);

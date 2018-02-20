@@ -21,7 +21,6 @@ public class TimedAutonomousDriveStraightDeliverCube extends Command {
 	public TimedAutonomousDriveStraightDeliverCube() {
 		requires(driveSubsystem);
 		requires(intaker);
-
 	}
 
 	// Called just before this Command runs the first time
@@ -38,7 +37,6 @@ public class TimedAutonomousDriveStraightDeliverCube extends Command {
 			intaker.releaseBlock();
 		else
 			isFinished = true;
-		
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

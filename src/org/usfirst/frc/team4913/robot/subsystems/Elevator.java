@@ -12,8 +12,8 @@ public class Elevator extends Subsystem {
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-	public static double LIFTER_UP_SPEED = 1;
-	public static double LIFTER_DOWN_SPEED = 0.5;
+	public static double LIFTER_UP_SPEED = 0.5;
+	public static double LIFTER_DOWN_SPEED = -0.5;
 	
 	Spark elevatorMotor = new Spark(RobotMap.ELEVATOR_MOTOR_PORT);
 	

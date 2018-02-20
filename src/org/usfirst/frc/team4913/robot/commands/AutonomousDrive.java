@@ -2,9 +2,10 @@ package org.usfirst.frc.team4913.robot.commands;
 
 import static org.usfirst.frc.team4913.robot.Robot.driveSubsystem;
 import static org.usfirst.frc.team4913.robot.Robot.intaker;
+import static org.usfirst.frc.team4913.robot.Robot.elevator;
 
 import org.usfirst.frc.team4913.robot.Robot;
-
+import edu.wpi.first.wpilibj.MotorSafetyHelper;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -19,33 +20,32 @@ public class AutonomousDrive extends Command {
 	Timer timer = new Timer();
 
 	private static final double INIT_FWD_TIME = 1.0;
-
-	// time it takes to turn 90 degrees
 	private static final double TURN_90_TIME = 1.0;
-
-	// time for positioning in front of switch
 	private static final double POSITION_TIME = 3.0;
-
-	// time for positioning in front of switch
 	private static final double APPROACH_TIME = 3.0;
+	private static final double VISION_TIME = 3.0;
+	private static final double DELIVER_CUBE = 3.0;
+	private static final double GO_STRAIGHT = 5.0;
 
 	private boolean isFinished = false;
 	private Robot.TURN direction;
-	private boolean deliverCube; // default true
-	private boolean useVision; // default true
+	private boolean deliverCube = true; // default true
+	private boolean useVision = false; // default true
 
-	private double initFwdTime;
-	private double turn1stTime;
-	private double positionTime;
-	private double turn2ndTime;
-	private double approachTime;
-	
+	private double initFwdTime = INIT_FWD_TIME;
+	private double turn1stTime = initFwdTime + TURN_90_TIME;
+	private double positionTime = turn1stTime + POSITION_TIME;
+	private double turn2ndTime = positionTime + TURN_90_TIME;
+	private double approachTime = turn2ndTime + APPROACH_TIME;
+	private double visionMiddleTime = approachTime + VISION_TIME;
+	private double visionSidesTime = GO_STRAIGHT + VISION_TIME;
+
 	public AutonomousDrive(Robot.TURN direction) {
 		this(direction, true, true);
 	}
 
 	public AutonomousDrive(Robot.TURN direction, boolean deliverCube) {
-		this(direction, deliverCube, true);
+		this(direction, deliverCube, false);
 	}
 
 	public AutonomousDrive(Robot.TURN direction, boolean deliverCube, boolean useVision) {
@@ -53,73 +53,98 @@ public class AutonomousDrive extends Command {
 		requires(intaker);
 		this.direction = direction;
 		this.deliverCube = deliverCube;
-		this.useVision = useVision;		
+		this.useVision = useVision;
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		initFwdTime = INIT_FWD_TIME;
-		turn1stTime = initFwdTime + TURN_90_TIME;
-		positionTime = turn1stTime + POSITION_TIME;
-		turn2ndTime = positionTime + TURN_90_TIME;
-		approachTime = turn2ndTime + APPROACH_TIME;
-
 		timer.reset();
 		timer.start();
 	}
 
 	protected void execute() {
 		double timerVal = timer.get();
-		if (this.useVision) {
-			executeWithVision(timerVal);
+
+		// testing
+		System.out.println("Direction: " + this.direction);
+		System.out.println("UseVision: " + this.useVision);
+		System.out.println("DeliverCube: " + this.deliverCube);
+
+		if (direction == Robot.TURN.STRAIGHT) {
+			startFromTwoSides(timerVal);
+		} else {
+			startInTheMiddle(timerVal);
 		}
-		else {
-			executeWithoutVision(timerVal);
+
+		// if (this.useVision) {
+		// executeVision(timerVal);
+		// }
+	}
+
+	private void startInTheMiddle(double timerVal) {
+		if (timerVal < initFwdTime)
+			driveSubsystem.arcadeDrive(-1.0, 0.0); // forward
+		else if (timerVal >= initFwdTime && timerVal < turn1stTime) { // initial turn
+			if (direction == Robot.TURN.LEFT) {
+				driveSubsystem.arcadeDrive(0.0, -1.0);// turn left
+			} else {
+				driveSubsystem.arcadeDrive(0.0, 1.0);// turn right
+			}
+		} else if (timerVal >= turn1stTime && timerVal < positionTime) {
+			driveSubsystem.arcadeDrive(-1.0, 0.0); // 2nd forward
+		} else if (positionTime >= positionTime && timerVal < turn2ndTime) { // turn back facing switch
+			if (direction == Robot.TURN.LEFT) {
+				driveSubsystem.arcadeDrive(0.0, 1.0);// turn right
+			} else {
+				driveSubsystem.arcadeDrive(0.0, -1.0); // turn left
+			}
+		} else if (timerVal >= turn2ndTime && timerVal < approachTime)
+			driveSubsystem.arcadeDrive(-1.0, 0.0); // 3nd forward
+
+		if (this.deliverCube) {
+			deliverCube(timerVal);
 		}
 	}
 
+	private void startFromTwoSides(double timerVal) {
+		if (timerVal < GO_STRAIGHT)
+			driveSubsystem.arcadeDrive(-1.0, 0.0);
 
-	private void executeWithoutVision(double timerVal) {
-		if(timerVal < initFwdTime) {
-			driveSubsystem.arcadeDrive(-1.0, 0.0); // forward
+		if (this.deliverCube) {
+			deliverCube(timerVal);
 		}
-		if(timerVal >= initFwdTime && timerVal < turn1stTime) { // initial turn
-			if (direction == Robot.TURN.LEFT)
-				driveSubsystem.arcadeDrive(0.0, -1.0); // turn left
-			else if (direction == Robot.TURN.RIGHT)
-				driveSubsystem.arcadeDrive(0.0, 1.0); // turn right
-			else
-				driveSubsystem.arcadeDrive(-1.0, 0.0);
+	}
+
+	private void executeVision(double timerVal) {
+		if (this.direction == Robot.TURN.STRAIGHT) {
+			if (timerVal < visionSidesTime)
+				driveSubsystem.autoDrive();
+		} else {
+			if (timerVal < visionMiddleTime)
+				driveSubsystem.autoDrive();
 		}
-		if(timerVal >= turn1stTime && timerVal < positionTime) {
-			if (direction == Robot.TURN.LEFT || direction == Robot.TURN.RIGHT)
-			driveSubsystem.arcadeDrive(-1.0, 0.0); // 2nd forward
-		}
-		if(timerVal >= 4 && timerVal < 5) { // turn back facing switch
-			if (direction == Robot.TURN.LEFT)
-				driveSubsystem.arcadeDrive(0.0, 1.0); // turn right
-			else if (direction == Robot.TURN.RIGHT)
-				driveSubsystem.arcadeDrive(0.0, -1.0); // turn left
-			else if (direction == Robot.TURN.STRAIGHT) {
-				driveSubsystem.arcadeDrive(-1.0, 0.0); // keep going straight
+	}
+
+	private void deliverCube(double timerVal) {
+		if (this.direction == Robot.TURN.STRAIGHT) {
+			if (!this.useVision) {
+				if (timerVal >= visionSidesTime && timerVal < visionSidesTime + DELIVER_CUBE)
+					elevator.up();
+			} else {
+				if (timerVal >= GO_STRAIGHT && timerVal < GO_STRAIGHT + DELIVER_CUBE)
+					elevator.up();
+			}
+		} else {
+			if (!this.useVision) {
+				if (timerVal >= visionMiddleTime && timerVal < visionMiddleTime + DELIVER_CUBE)
+					elevator.up();
+			} else {
+				if (timerVal >= approachTime && timerVal < approachTime + DELIVER_CUBE)
+					elevator.up();
 			}
 		}
-		if(timerVal >= 5) { //&& timerVal < 13) {
-			driveSubsystem.autoDrive();
-		}
-//		if(timerVal >= 13 && timerVal < 15) {
-//			grabberSubsystem.releaseBlock();
-//		}
-//		if(timerVal > 15) {
-//		isFinished = true;
-//		}
-		
 	}
-	
-	private void executeWithVision(double timerVal) {
-		
-	}
-	
+
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
 		return isFinished;

@@ -31,10 +31,9 @@ import org.usfirst.frc.team4913.robot.subsystems.Rotator;
  * project.
  */
 public class Robot extends TimedRobot {
-	
+
 	Preferences prefs;
-	public static final DriveSubsystem driveSubsystem
-			= new DriveSubsystem();
+	public static final DriveSubsystem driveSubsystem = new DriveSubsystem();
 	public static final Intaker intaker = new Intaker();
 	public static final Rotator rotator = new Rotator();
 	public static final Actuator actuator = new Actuator();
@@ -46,20 +45,16 @@ public class Robot extends TimedRobot {
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 	public enum TURN {
-		LEFT,
-		RIGHT,
-		STRAIGHT;
-	}
-	
-	public enum DELIVERCUBE {
-		YES,
-		NO;
+		LEFT, RIGHT, STRAIGHT;
 	}
 
+	public enum DELIVERCUBE {
+		YES, NO;
+	}
 
 	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
+	 * This function is run when the robot is first started up and should be used
+	 * for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
@@ -87,9 +82,9 @@ public class Robot extends TimedRobot {
 	}
 
 	/**
-	 * This function is called once each time the robot enters Disabled mode.
-	 * You can use it to reset any subsystem information you want to clear when
-	 * the robot is disabled.
+	 * This function is called once each time the robot enters Disabled mode. You
+	 * can use it to reset any subsystem information you want to clear when the
+	 * robot is disabled.
 	 */
 	@Override
 	public void disabledInit() {
@@ -103,31 +98,30 @@ public class Robot extends TimedRobot {
 
 	/**
 	 * This autonomous (along with the chooser code above) shows how to select
-	 * between different autonomous modes using the dashboard. The sendable
-	 * chooser code works with the Java SmartDashboard. If you prefer the
-	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-	 * getString code to get the auto name from the text box below the Gyro
+	 * between different autonomous modes using the dashboard. The sendable chooser
+	 * code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard,
+	 * remove all of the chooser code and uncomment the getString code to get the
+	 * auto name from the text box below the Gyro
 	 *
-	 * <p>You can add additional auto modes by adding additional commands to the
-	 * chooser code above (like the commented example) or additional comparisons
-	 * to the switch structure below with additional strings & commands.
+	 * <p>
+	 * You can add additional auto modes by adding additional commands to the
+	 * chooser code above (like the commented example) or additional comparisons to
+	 * the switch structure below with additional strings & commands.
 	 */
 	@Override
 	public void autonomousInit() {
 		int robotPosition = prefs.getInt("robotPosition", 1);
-		boolean useVision = prefs.getBoolean("useVision", true);
+		boolean useVision = prefs.getBoolean("useVision", false);
 		boolean deliverCube = prefs.getBoolean("deliverCube", true);
 
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		SmartDashboard.putString("Game Data", gameData);
-		SmartDashboard.putNumber("Robot Position", robotPosition);		
+		SmartDashboard.putNumber("Robot Position", robotPosition);
 
-		if ((robotPosition == 1 && gameData.charAt(0) == 'L') 
-				|| (robotPosition == 3 && gameData.charAt(0) == 'R')) {
+		if ((robotPosition == 1 && gameData.charAt(0) == 'L') || (robotPosition == 3 && gameData.charAt(0) == 'R')) {
 			// we're in corner position and switch is our side
-			m_autonomousCommand = deliverCube ? 
-					new Autonomous(TURN.STRAIGHT, DELIVERCUBE.YES) : 
-						new Autonomous(TURN.STRAIGHT, DELIVERCUBE.NO);
+			m_autonomousCommand = deliverCube ? new Autonomous(TURN.STRAIGHT, DELIVERCUBE.YES)
+					: new Autonomous(TURN.STRAIGHT, DELIVERCUBE.NO);
 		} else if (robotPosition == 2) {
 			if (gameData.charAt(0) == 'L') {
 				m_autonomousCommand = new Autonomous(TURN.LEFT, DELIVERCUBE.YES);
@@ -135,19 +129,20 @@ public class Robot extends TimedRobot {
 				m_autonomousCommand = new Autonomous(TURN.RIGHT, DELIVERCUBE.YES);
 			}
 		} else {
-			//driveStraightNoCube = true;
+			// driveStraightNoCube = true;
 			m_autonomousCommand = new Autonomous(TURN.STRAIGHT, DELIVERCUBE.NO);
 		}
 
 		// test code, remove
-		/*m_autonomousCommand = m_chooser.getSelected();
-		m_autonomousCommand.start();*/
+		/*
+		 * m_autonomousCommand = m_chooser.getSelected(); m_autonomousCommand.start();
+		 */
 
 		// schedule the autonomous command (example)
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.start();
 		}
-		
+
 	}
 
 	/**

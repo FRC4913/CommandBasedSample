@@ -46,7 +46,7 @@ public class OI {
 	public Button xboxButton5 = new JoystickButton(xboxController, 5);
 	public Button xboxButton6 = new JoystickButton(xboxController, 6);
 
-	//public Button joystickRelease = new JoystickButton(joystick, 1);
+	// public Button joystickRelease = new JoystickButton(joystick, 1);
 	public Button joystickHookUp = new JoystickButton(joystick, 3);
 	public Button joystickClimb = new JoystickButton(joystick, 2);
 
@@ -60,7 +60,7 @@ public class OI {
 
 		xboxButton5.whileHeld(new BlockIntake());
 		xboxButton6.whileHeld(new BlockIntake());
-		//joystickRelease.whileHeld(new BlockRelease());
+		// joystickRelease.whileHeld(new BlockRelease());
 
 		joystickHookUp.whileHeld(new HookUp());
 		joystickHookUp.whenReleased(new HookDown());

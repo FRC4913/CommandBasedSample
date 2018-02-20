@@ -4,7 +4,6 @@ import static org.usfirst.frc.team4913.robot.Robot.intaker;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-
 /**
  *
  */
