@@ -120,17 +120,16 @@ public class Robot extends TimedRobot {
 
 		if ((robotPosition == 1 && gameData.charAt(0) == 'L') || (robotPosition == 3 && gameData.charAt(0) == 'R')) {
 			// we're in corner position and switch is our side
-			m_autonomousCommand = deliverCube ? new Autonomous(TURN.STRAIGHT, DELIVERCUBE.YES)
-					: new Autonomous(TURN.STRAIGHT, DELIVERCUBE.NO);
+			m_autonomousCommand = new AutonomousDrive(TURN.STRAIGHT, deliverCube, useVision);
 		} else if (robotPosition == 2) {
 			if (gameData.charAt(0) == 'L') {
-				m_autonomousCommand = new Autonomous(TURN.LEFT, DELIVERCUBE.YES);
+				m_autonomousCommand = new AutonomousDrive(TURN.LEFT, deliverCube, useVision);
 			} else if (gameData.charAt(0) == 'R') {
-				m_autonomousCommand = new Autonomous(TURN.RIGHT, DELIVERCUBE.YES);
+				m_autonomousCommand = new AutonomousDrive(TURN.RIGHT, deliverCube, useVision);
 			}
 		} else {
 			// driveStraightNoCube = true;
-			m_autonomousCommand = new Autonomous(TURN.STRAIGHT, DELIVERCUBE.NO);
+			m_autonomousCommand = new AutonomousDrive(TURN.STRAIGHT, false, false);
 		}
 
 		// test code, remove

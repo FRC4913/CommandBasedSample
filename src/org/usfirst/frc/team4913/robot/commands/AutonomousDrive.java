@@ -79,6 +79,10 @@ public class AutonomousDrive extends Command {
 		// if (this.useVision) {
 		// executeVision(timerVal);
 		// }
+
+		if (this.deliverCube) {
+			deliverCube(timerVal);
+		}
 	}
 
 	private void startInTheMiddle(double timerVal) {
@@ -101,18 +105,11 @@ public class AutonomousDrive extends Command {
 		} else if (timerVal >= turn2ndTime && timerVal < approachTime)
 			driveSubsystem.arcadeDrive(-1.0, 0.0); // 3nd forward
 
-		if (this.deliverCube) {
-			deliverCube(timerVal);
-		}
 	}
 
 	private void startFromTwoSides(double timerVal) {
 		if (timerVal < GO_STRAIGHT)
 			driveSubsystem.arcadeDrive(-1.0, 0.0);
-
-		if (this.deliverCube) {
-			deliverCube(timerVal);
-		}
 	}
 
 	private void executeVision(double timerVal) {
