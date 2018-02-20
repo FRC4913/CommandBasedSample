@@ -130,19 +130,51 @@ public class Robot extends TimedRobot {
 		|
 		|1 ----------->
 		|       |   |---|
-		|       |-->| S |
-		|           | W |
-		|2 ----|    | I |
-		|           | T |
-		|           | C |
-		|       |-->| H |
+		|   |-> |-->| S |
+		|   |       | W |
+		|2 -|       | I |
+		|   |       | T |
+		|   |       | C |
+		|   |-> |-->| H |
 		|       |   |---|
 		|3 ----------->
 		|
 
 		 */
 
-		if ((robotPosition == 1 && gameData.charAt(0) == 'L') || (robotPosition == 3 && gameData.charAt(0) == 'R')) {
+		switch (robotPosition) {
+			case 1:	// left position
+				if (deliverCube && gameData.charAt(0) == 'L') {
+					m_autonomousCommand = new AutonomousOutsideDrive(TURN
+							.RIGHT, true, useVision);
+				}
+				else
+					m_autonomousCommand = new AutonomousOutsideDrive(TURN
+							.STRAIGHT, false, useVision);
+				break;
+			case 2: // middle position
+				if (deliverCube && gameData.charAt(0) == 'L')
+					m_autonomousCommand = new AutonomousMiddleDrive(TURN
+							.LEFT, true, useVision);
+				else if (deliverCube && gameData.charAt(0) == 'R')
+					m_autonomousCommand = new AutonomousMiddleDrive(TURN
+							.RIGHT, true, useVision);
+				else
+					m_autonomousCommand = new AutonomousMiddleDrive(TURN
+							.STRAIGHT, false, useVision);
+				break;
+			case 3:	// right position
+				if (deliverCube && gameData.charAt(0) == 'R') {
+					m_autonomousCommand = new AutonomousOutsideDrive(TURN
+							.LEFT, true, useVision);
+				}
+				else
+					m_autonomousCommand = new AutonomousOutsideDrive(TURN
+							.STRAIGHT, false, useVision);
+				break;
+		}
+
+		/*if ((robotPosition == 1 && gameData.charAt(0) == 'L') || (robotPosition == 3 && gameData.charAt(0) == 'R')) {
 			// we're in corner position and switch is our side
 			m_autonomousCommand = new AutonomousDrive(TURN.STRAIGHT, deliverCube, useVision);
 		} else if (robotPosition == 2) {
@@ -154,7 +186,7 @@ public class Robot extends TimedRobot {
 		} else {
 			// driveStraightNoCube = true;
 			m_autonomousCommand = new AutonomousDrive(TURN.STRAIGHT, false, false);
-		}
+		}*/
 
 		// test code, remove
 		/*
