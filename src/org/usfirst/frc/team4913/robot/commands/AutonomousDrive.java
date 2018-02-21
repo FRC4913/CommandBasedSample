@@ -2,7 +2,6 @@ package org.usfirst.frc.team4913.robot.commands;
 
 import static org.usfirst.frc.team4913.robot.Robot.driveSubsystem;
 import static org.usfirst.frc.team4913.robot.Robot.intaker;
-import static org.usfirst.frc.team4913.robot.Robot.elevator;
 
 import org.usfirst.frc.team4913.robot.Robot;
 import edu.wpi.first.wpilibj.MotorSafetyHelper;
@@ -124,20 +123,20 @@ public class AutonomousDrive extends Command {
 
 	private void deliverCube(double timerVal) {
 		if (this.direction == Robot.TURN.STRAIGHT) {
-			if (!this.useVision) {
+			if (this.useVision) {
 				if (timerVal >= visionSidesTime && timerVal < visionSidesTime + DELIVER_CUBE)
-					elevator.up();
+					intaker.releaseBlock();
 			} else {
 				if (timerVal >= GO_STRAIGHT && timerVal < GO_STRAIGHT + DELIVER_CUBE)
-					elevator.up();
+					intaker.releaseBlock();
 			}
 		} else {
-			if (!this.useVision) {
+			if (this.useVision) {
 				if (timerVal >= visionMiddleTime && timerVal < visionMiddleTime + DELIVER_CUBE)
-					elevator.up();
+					intaker.releaseBlock();
 			} else {
 				if (timerVal >= approachTime && timerVal < approachTime + DELIVER_CUBE)
-					elevator.up();
+					intaker.releaseBlock();
 			}
 		}
 	}

@@ -1,25 +1,19 @@
 package org.usfirst.frc.team4913.robot.commands;
 
-import static org.usfirst.frc.team4913.robot.OI.xboxController;
-import static org.usfirst.frc.team4913.robot.OI.joystick;
-import static org.usfirst.frc.team4913.robot.Robot.intaker;
+import static org.usfirst.frc.team4913.robot.Robot.actuator;
 
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class BlockRelease extends Command {
+public class ActuatorDown extends Command {
 
-	private static final double TRIGGER_THRESHOLD = 0.1;
-
-	public BlockRelease() {
-
+	public ActuatorDown() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
-		super("BlockRelease");
-		requires(intaker);
+		super("ActuatorDown");
+		requires(actuator);
 	}
 
 	// Called just before this Command runs the first time
@@ -28,7 +22,7 @@ public class BlockRelease extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		intaker.releaseBlock();
+		actuator.down();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -38,7 +32,7 @@ public class BlockRelease extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		intaker.stop();
+		actuator.stop();
 	}
 
 	// Called when another command which requires one or more of the same

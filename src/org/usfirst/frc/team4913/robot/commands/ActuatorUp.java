@@ -1,20 +1,18 @@
 package org.usfirst.frc.team4913.robot.commands;
 
-import static org.usfirst.frc.team4913.robot.OI.xboxController;
 import static org.usfirst.frc.team4913.robot.Robot.actuator;
 
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ActuatorMove extends Command {
+public class ActuatorUp extends Command {
 
-	public ActuatorMove() {
+	public ActuatorUp() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
-		super("ActuatorMove");
+		super("ActuatorUp");
 		requires(actuator);
 	}
 
@@ -24,7 +22,7 @@ public class ActuatorMove extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		actuator.move(xboxController.getY(Hand.kLeft));
+		actuator.up();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

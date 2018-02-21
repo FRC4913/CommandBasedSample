@@ -42,7 +42,7 @@ public class Robot extends TimedRobot {
 	public static OI m_oi;
 
 	Command m_autonomousCommand;
-	SendableChooser<Command> m_chooser = new SendableChooser<>();
+	SendableChooser<Command> m_choosser = new SendableChooser<>();
 
 	public enum TURN {
 		LEFT, RIGHT, STRAIGHT;
@@ -59,10 +59,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		m_oi = new OI();
-		m_chooser.addDefault("Default Auto", new Drive());
-		m_chooser.addObject("StraightYes", new Autonomous(TURN.STRAIGHT, DELIVERCUBE.YES));
-		m_chooser.addObject("StraightNo", new Autonomous(TURN.STRAIGHT, DELIVERCUBE.NO));
-		SmartDashboard.putData("Auto mode", m_chooser);
+//		m_chooser.addDefault("Default Auto", new Drive());
+//		m_chooser.addObject("StraightYes", new Autonomous(TURN.STRAIGHT, DELIVERCUBE.YES));
+//		m_chooser.addObject("StraightNo", new Autonomous(TURN.STRAIGHT, DELIVERCUBE.NO));
+//		SmartDashboard.putData("Auto mode", m_chooser);
 		SmartDashboard.putData(elevator);
 		SmartDashboard.putData(actuator);
 		SmartDashboard.putData(rotator);
@@ -71,7 +71,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData(driveSubsystem);
 		SmartDashboard.putData("ElevatorDown", new ElevatorDown());
 		SmartDashboard.putData("ElevatorUp", new ElevatorUp());
-		SmartDashboard.putData("ActuatorMove", new ActuatorMove());
+		//SmartDashboard.putData("ActuatorMove", new ActuatorMove());
 		SmartDashboard.putData("RotatorMove", new RotatorMove());
 		SmartDashboard.putData("BlockIntake", new BlockIntake());
 		SmartDashboard.putData("BlockRelease", new BlockRelease());
