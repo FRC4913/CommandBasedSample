@@ -42,7 +42,7 @@ public class Robot extends TimedRobot {
 	public static OI m_oi;
 
 	Command m_autonomousCommand;
-	SendableChooser<Command> m_choosser = new SendableChooser<>();
+	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 	public enum TURN {
 		LEFT, RIGHT, STRAIGHT;
@@ -59,10 +59,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		m_oi = new OI();
-//		m_chooser.addDefault("Default Auto", new Drive());
-//		m_chooser.addObject("StraightYes", new Autonomous(TURN.STRAIGHT, DELIVERCUBE.YES));
-//		m_chooser.addObject("StraightNo", new Autonomous(TURN.STRAIGHT, DELIVERCUBE.NO));
-//		SmartDashboard.putData("Auto mode", m_chooser);
+		m_chooser.addDefault("Default Auto", new Drive());
+		m_chooser.addObject("StraightYes", new Autonomous(TURN.STRAIGHT, DELIVERCUBE.YES));
+		m_chooser.addObject("StraightNo", new Autonomous(TURN.STRAIGHT, DELIVERCUBE.NO));
+		SmartDashboard.putData("Auto mode", m_chooser);
 		SmartDashboard.putData(elevator);
 		SmartDashboard.putData(actuator);
 		SmartDashboard.putData(rotator);
@@ -71,7 +71,6 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData(driveSubsystem);
 		SmartDashboard.putData("ElevatorDown", new ElevatorDown());
 		SmartDashboard.putData("ElevatorUp", new ElevatorUp());
-		//SmartDashboard.putData("ActuatorMove", new ActuatorMove());
 		SmartDashboard.putData("RotatorMove", new RotatorMove());
 		SmartDashboard.putData("BlockIntake", new BlockIntake());
 		SmartDashboard.putData("BlockRelease", new BlockRelease());
@@ -118,43 +117,50 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putString("Game Data", gameData);
 		SmartDashboard.putNumber("Robot Position", robotPosition);
 
-		/* These are various autonomous drive options:
-		1/3. Outside positions:
-			if (deliverCube && color matches) deliver cube (turn left/right)
-			else drive straight
-
-		2. Middle position:
-			if (deliverCube) turn left/right and deliver cube
-			else delay? turn left OR right and breach line
-
-		|
-		|1 ----------->
-		|       |   |---|
-		|       |-->| S |
-		|           | W |
-		|2 ----|    | I |
-		|           | T |
-		|           | C |
-		|       |-->| H |
-		|       |   |---|
-		|3 ----------->
-		|
-
+		/*
+		 * These are various autonomous drive options: 1/3. Outside positions: if
+		 * (deliverCube && color matches) deliver cube (turn left/right) else drive
+		 * straight 2. Middle position: if (deliverCube) turn left/right and deliver
+		 * cube else delay? turn left OR right and breach line | |1 -----------> | |
+		 * |---| | |-> |-->| S | | | | W | |2 -| | I | | | | T | | | | C | | |-> |-->| H
+		 * | | | |---| |3 -----------> |
 		 */
 
-		if ((robotPosition == 1 && gameData.charAt(0) == 'L') || (robotPosition == 3 && gameData.charAt(0) == 'R')) {
-			// we're in corner position and switch is our side
-			m_autonomousCommand = new AutonomousDrive(TURN.STRAIGHT, deliverCube, useVision);
-		} else if (robotPosition == 2) {
-			if (gameData.charAt(0) == 'L') {
-				m_autonomousCommand = new AutonomousDrive(TURN.LEFT, deliverCube, useVision);
-			} else if (gameData.charAt(0) == 'R') {
-				m_autonomousCommand = new AutonomousDrive(TURN.RIGHT, deliverCube, useVision);
-			}
-		} else {
-			// driveStraightNoCube = true;
-			m_autonomousCommand = new AutonomousDrive(TURN.STRAIGHT, false, false);
+		switch (robotPosition) {
+		case 1: // left position
+			if (deliverCube && gameData.charAt(0) == 'L') {
+				m_autonomousCommand = new AutonomousOutsideDrive(TURN.RIGHT, true, useVision);
+			} else
+				m_autonomousCommand = new AutonomousOutsideDrive(TURN.STRAIGHT, false, useVision);
+			break;
+		case 2: // middle position
+			if (deliverCube && gameData.charAt(0) == 'L')
+				m_autonomousCommand = new AutonomousMiddleDrive(TURN.LEFT, true, useVision);
+			else if (deliverCube && gameData.charAt(0) == 'R')
+				m_autonomousCommand = new AutonomousMiddleDrive(TURN.RIGHT, true, useVision);
+			else
+				m_autonomousCommand = new AutonomousMiddleDrive(TURN.STRAIGHT, false, useVision);
+			break;
+		case 3: // right position
+			if (deliverCube && gameData.charAt(0) == 'R') {
+				m_autonomousCommand = new AutonomousOutsideDrive(TURN.LEFT, true, useVision);
+			} else
+				m_autonomousCommand = new AutonomousOutsideDrive(TURN.STRAIGHT, false, useVision);
+			break;
 		}
+
+		/*
+		 * if ((robotPosition == 1 && gameData.charAt(0) == 'L') || (robotPosition == 3
+		 * && gameData.charAt(0) == 'R')) { // we're in corner position and switch is
+		 * our side m_autonomousCommand = new AutonomousDrive(TURN.STRAIGHT,
+		 * deliverCube, useVision); } else if (robotPosition == 2) { if
+		 * (gameData.charAt(0) == 'L') { m_autonomousCommand = new
+		 * AutonomousDrive(TURN.LEFT, deliverCube, useVision); } else if
+		 * (gameData.charAt(0) == 'R') { m_autonomousCommand = new
+		 * AutonomousDrive(TURN.RIGHT, deliverCube, useVision); } } else { //
+		 * driveStraightNoCube = true; m_autonomousCommand = new
+		 * AutonomousDrive(TURN.STRAIGHT, false, false); }
+		 */
 
 		// test code, remove
 		/*

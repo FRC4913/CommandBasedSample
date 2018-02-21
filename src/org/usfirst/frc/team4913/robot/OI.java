@@ -11,6 +11,8 @@ import org.usfirst.frc.team4913.robot.commands.ActuatorDown;
 import org.usfirst.frc.team4913.robot.commands.ActuatorUp;
 import org.usfirst.frc.team4913.robot.commands.BlockIntake;
 import org.usfirst.frc.team4913.robot.commands.BlockRelease;
+import org.usfirst.frc.team4913.robot.commands.ElevatorDown;
+import org.usfirst.frc.team4913.robot.commands.ElevatorUp;
 //import org.usfirst.frc.team4913.robot.commands.ElevatorDown;
 //import org.usfirst.frc.team4913.robot.commands.ElevatorUp;
 import org.usfirst.frc.team4913.robot.commands.HookDown;
@@ -60,8 +62,8 @@ public class OI {
 		joystickActuatorUp.whileHeld(new ActuatorUp());
 		joystickActuatorDown.whileHeld(new ActuatorDown());
 
-//		joystickElevatorUp.whileHeld(new ElevatorUp());
-//		joystickElevatorDown.whileHeld(new ElevatorDown());
+		joystickElevatorUp.whileHeld(new ElevatorUp());
+		joystickElevatorDown.whileHeld(new ElevatorDown());
 
 		xboxButton5.whileHeld(new BlockRelease());
 		xboxButton6.whileHeld(new BlockRelease());
