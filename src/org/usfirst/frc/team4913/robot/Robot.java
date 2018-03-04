@@ -117,14 +117,30 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putString("Game Data", gameData);
 		SmartDashboard.putNumber("Robot Position", robotPosition);
 
-		/*
-		 * These are various autonomous drive options: 1/3. Outside positions: if
-		 * (deliverCube && color matches) deliver cube (turn left/right) else drive
-		 * straight 2. Middle position: if (deliverCube) turn left/right and deliver
-		 * cube else delay? turn left OR right and breach line | |1 -----------> | |
-		 * |---| | |-> |-->| S | | | | W | |2 -| | I | | | | T | | | | C | | |-> |-->| H
-		 * | | | |---| |3 -----------> |
+		/* These are various autonomous drive options:
+		1/3. Outside positions:
+			if (deliverCube && color matches) deliver cube (turn left/right)
+			else drive straight
+
+		2. Middle position:
+			if (deliverCube) turn left/right and deliver cube
+			else delay? turn left OR right and breach line
+
+		|
+		|1 -----------|
+		|           |---|
+		|   |->---->| S |
+		|   |       | W |
+		|2 -|       | I |
+		|   |       | T |
+		|   |       | C |
+		|   |->---->| H |
+		|           |---|
+		|3 -----------^
+		|
+
 		 */
+
 
 		switch (robotPosition) {
 		case 1: // left position

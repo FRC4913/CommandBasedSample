@@ -23,8 +23,14 @@ public class AutonomousOutsideDrive extends Command {
 	private static final double VISION_TIME = 3.0;
 	private static final double DELIVER_CUBE = 3.0;
 	private static final double GO_STRAIGHT = 5.0;
+	private static final double GO_STRAIGHT_WITHOUT_TURN = 3.0 + GO_STRAIGHT;
+	private static final double APPROCH_TIME = 3.0;
+	private static final double TURN_90_TIME = 1.0;
 
 	private double visionSidesTime = GO_STRAIGHT + VISION_TIME;
+	private double turnTime = GO_STRAIGHT + TURN_90_TIME;
+	private double approachTime = turnTime + APPROCH_TIME;
+	private double deliverTime = approachTime + DELIVER_CUBE;
 
 	public AutonomousOutsideDrive(TURN direction, boolean deliverCube, boolean useVision) {
 		requires(driveSubsystem);
@@ -50,8 +56,25 @@ public class AutonomousOutsideDrive extends Command {
 
 		if (timerVal < GO_STRAIGHT)
 			driveSubsystem.arcadeDrive(-1.0, 0.0);
-		else
-			intaker.releaseBlock();
+		else if (deliverCube) {
+			if (timerVal >= GO_STRAIGHT && timerVal < turnTime) {
+				if (direction == Robot.TURN.LEFT) {
+					driveSubsystem.arcadeDrive(0.0, -1.0);// turn left
+				} else {
+					driveSubsystem.arcadeDrive(0.0, 1.0);// turn right
+				}
+			} else if (timerVal >= turnTime && timerVal < approachTime) {
+				driveSubsystem.arcadeDrive(-1.0, 0.0); // forward
+			} else if (timerVal >= approachTime && timerVal < deliverTime)
+				intaker.releaseBlock();
+			else
+				isFinished = true;
+		} else {
+			if (timerVal >= GO_STRAIGHT && timerVal < GO_STRAIGHT_WITHOUT_TURN) {
+				driveSubsystem.arcadeDrive(-1.0, 0.0); // forward
+			}else 
+				isFinished = true;
+		}
 
 	}
 

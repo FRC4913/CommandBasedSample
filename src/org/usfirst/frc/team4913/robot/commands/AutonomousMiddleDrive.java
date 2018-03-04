@@ -26,14 +26,13 @@ public class AutonomousMiddleDrive extends Command {
 	private static final double APPROACH_TIME = 3.0;
 	private static final double VISION_TIME = 3.0;
 	private static final double DELIVER_CUBE = 3.0;
-	private static final double GO_STRAIGHT = 5.0;
 	private double initFwdTime = INIT_FWD_TIME;
 	private double turn1stTime = initFwdTime + TURN_90_TIME;
 	private double positionTime = turn1stTime + POSITION_TIME;
 	private double turn2ndTime = positionTime + TURN_90_TIME;
 	private double approachTime = turn2ndTime + APPROACH_TIME;
 	private double visionMiddleTime = approachTime + VISION_TIME;
-	private double visionSidesTime = GO_STRAIGHT + VISION_TIME;
+	private double deliverTime = approachTime + DELIVER_CUBE;
 
 	public AutonomousMiddleDrive(TURN direction, boolean deliverCube, boolean useVision) {
 		requires(driveSubsystem);
@@ -67,7 +66,7 @@ public class AutonomousMiddleDrive extends Command {
 			}
 		} else if (timerVal >= turn1stTime && timerVal < positionTime) {
 			driveSubsystem.arcadeDrive(-1.0, 0.0); // 2nd forward
-		} else if (positionTime >= positionTime && timerVal < turn2ndTime) { // turn back facing switch
+		} else if (timerVal >= positionTime && timerVal < turn2ndTime) { // turn back facing switch
 			if (direction == Robot.TURN.LEFT) {
 				driveSubsystem.arcadeDrive(0.0, 1.0);// turn right
 			} else {
@@ -75,8 +74,10 @@ public class AutonomousMiddleDrive extends Command {
 			}
 		} else if (timerVal >= turn2ndTime && timerVal < approachTime)
 			driveSubsystem.arcadeDrive(-1.0, 0.0); // 3nd forward
-		else
+		else if (timerVal >= approachTime && timerVal < deliverTime)
 			intaker.releaseBlock();
+		else isFinished = true;
+			
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
