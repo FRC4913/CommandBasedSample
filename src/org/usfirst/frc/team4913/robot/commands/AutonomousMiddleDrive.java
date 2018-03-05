@@ -51,11 +51,6 @@ public class AutonomousMiddleDrive extends Command {
 	protected void execute() {
 		double timerVal = timer.get();
 
-		// testing
-		System.out.println("Direction: " + this.direction);
-		System.out.println("UseVision: " + this.useVision);
-		System.out.println("DeliverCube: " + this.deliverCube);
-
 		if (timerVal < initFwdTime)
 			driveSubsystem.arcadeDrive(-1.0, 0.0); // forward
 		else if (timerVal >= initFwdTime && timerVal < turn1stTime) { // initial turn

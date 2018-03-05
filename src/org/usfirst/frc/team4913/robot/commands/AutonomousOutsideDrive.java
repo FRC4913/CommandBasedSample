@@ -49,11 +49,6 @@ public class AutonomousOutsideDrive extends Command {
 	protected void execute() {
 		double timerVal = timer.get();
 
-		// testing
-		System.out.println("Direction: " + this.direction);
-		System.out.println("UseVision: " + this.useVision);
-		System.out.println("DeliverCube: " + this.deliverCube);
-
 		if (timerVal < GO_STRAIGHT)
 			driveSubsystem.arcadeDrive(-1.0, 0.0);
 		else if (deliverCube) {

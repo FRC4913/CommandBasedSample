@@ -7,22 +7,11 @@
 
 package org.usfirst.frc.team4913.robot;
 
-import org.usfirst.frc.team4913.robot.commands.ActuatorDown;
-import org.usfirst.frc.team4913.robot.commands.ActuatorUp;
-import org.usfirst.frc.team4913.robot.commands.BlockIntake;
-import org.usfirst.frc.team4913.robot.commands.BlockRelease;
-import org.usfirst.frc.team4913.robot.commands.ElevatorDown;
-import org.usfirst.frc.team4913.robot.commands.ElevatorUp;
-//import org.usfirst.frc.team4913.robot.commands.ElevatorDown;
-//import org.usfirst.frc.team4913.robot.commands.ElevatorUp;
-import org.usfirst.frc.team4913.robot.commands.HookDown;
-import org.usfirst.frc.team4913.robot.commands.HookUp;
-import org.usfirst.frc.team4913.robot.commands.RobotUp;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import org.usfirst.frc.team4913.robot.commands.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
