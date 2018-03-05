@@ -60,8 +60,20 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		m_oi = new OI();
 		m_chooser.addDefault("Default Auto", new Drive());
-		m_chooser.addObject("StraightYes", new Autonomous(TURN.STRAIGHT, DELIVERCUBE.YES));
-		m_chooser.addObject("StraightNo", new Autonomous(TURN.STRAIGHT, DELIVERCUBE.NO));
+		m_chooser.addObject("Position 1 STRAIGHT", new
+				AutonomousOutsideDrive(TURN.STRAIGHT, false, false));
+		m_chooser.addObject("Position 1 DELIVER", new
+				AutonomousOutsideDrive(TURN.RIGHT, true, false));
+		m_chooser.addObject("Position 2 LEFT", new
+				AutonomousOutsideDrive(TURN.LEFT, true, false));
+		m_chooser.addObject("Position 2 RIGHT", new
+				AutonomousOutsideDrive(TURN.RIGHT, true, false));
+		m_chooser.addObject("Position 2 NO DELIVER", new
+				AutonomousOutsideDrive(TURN.STRAIGHT, false, false));
+		m_chooser.addObject("Position 3 STRAIGHT", new
+				AutonomousOutsideDrive(TURN.STRAIGHT, false, false));
+		m_chooser.addObject("Position 3 DELIVER", new
+				AutonomousOutsideDrive(TURN.LEFT, true, false));
 		SmartDashboard.putData("Auto mode", m_chooser);
 		SmartDashboard.putData(elevator);
 		SmartDashboard.putData(actuator);
@@ -164,19 +176,6 @@ public class Robot extends TimedRobot {
 				m_autonomousCommand = new AutonomousOutsideDrive(TURN.STRAIGHT, false, useVision);
 			break;
 		}
-
-		/*
-		 * if ((robotPosition == 1 && gameData.charAt(0) == 'L') || (robotPosition == 3
-		 * && gameData.charAt(0) == 'R')) { // we're in corner position and switch is
-		 * our side m_autonomousCommand = new AutonomousDrive(TURN.STRAIGHT,
-		 * deliverCube, useVision); } else if (robotPosition == 2) { if
-		 * (gameData.charAt(0) == 'L') { m_autonomousCommand = new
-		 * AutonomousDrive(TURN.LEFT, deliverCube, useVision); } else if
-		 * (gameData.charAt(0) == 'R') { m_autonomousCommand = new
-		 * AutonomousDrive(TURN.RIGHT, deliverCube, useVision); } } else { //
-		 * driveStraightNoCube = true; m_autonomousCommand = new
-		 * AutonomousDrive(TURN.STRAIGHT, false, false); }
-		 */
 
 		// test code, remove
 		/*
