@@ -1,10 +1,8 @@
 package org.usfirst.frc.team4913.robot.commands;
 
 import static org.usfirst.frc.team4913.robot.Robot.climber;
-import static org.usfirst.frc.team4913.robot.OI.joystick;
 
 import edu.wpi.first.wpilibj.command.Command;
-
 
 /**
  *

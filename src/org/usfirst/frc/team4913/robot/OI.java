@@ -7,18 +7,11 @@
 
 package org.usfirst.frc.team4913.robot;
 
-import org.usfirst.frc.team4913.robot.commands.BlockIntake;
-import org.usfirst.frc.team4913.robot.commands.BlockRelease;
-import org.usfirst.frc.team4913.robot.commands.ElevatorDown;
-import org.usfirst.frc.team4913.robot.commands.ElevatorUp;
-import org.usfirst.frc.team4913.robot.commands.HookDown;
-import org.usfirst.frc.team4913.robot.commands.HookUp;
-import org.usfirst.frc.team4913.robot.commands.RobotUp;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import org.usfirst.frc.team4913.robot.commands.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -36,17 +29,17 @@ public class OI {
 
 	public static Joystick joystick = new Joystick(RobotMap.JOYSTICK_PORT);
 
-	// button 4 is y on xbox controller
-	public Button yButton = new JoystickButton(xboxController, 4);
+	public Button joystickActuatorDown = new JoystickButton(joystick, 4);
+	public Button joystickActuatorUp = new JoystickButton(joystick, 5);
 
-	// button 1 is A on xbox controller
-	public Button aButton = new JoystickButton(xboxController, 1);
+	public Button joystickElevatorUp = new JoystickButton(joystick, 6);
+	public Button joystickElevatorDown = new JoystickButton(joystick, 7);
 
 	// left and right bumpers
 	public Button xboxButton5 = new JoystickButton(xboxController, 5);
 	public Button xboxButton6 = new JoystickButton(xboxController, 6);
 
-	//public Button joystickRelease = new JoystickButton(joystick, 1);
+	// public Button joystickRelease = new JoystickButton(joystick, 1);
 	public Button joystickHookUp = new JoystickButton(joystick, 3);
 	public Button joystickClimb = new JoystickButton(joystick, 2);
 
@@ -55,12 +48,15 @@ public class OI {
 	// commands the same as any other Button.
 
 	public OI() {
-		yButton.whileHeld(new ElevatorUp());
-		aButton.whileHeld(new ElevatorDown()); // Lower the Lifter when the A button of the xboxController is Pressed
+		joystickActuatorUp.whileHeld(new ActuatorUp());
+		joystickActuatorDown.whileHeld(new ActuatorDown());
 
-		xboxButton5.whileHeld(new BlockIntake());
-		xboxButton6.whileHeld(new BlockIntake());
-		//joystickRelease.whileHeld(new BlockRelease());
+		joystickElevatorUp.whileHeld(new ElevatorUp());
+		joystickElevatorDown.whileHeld(new ElevatorDown());
+
+		xboxButton5.whileHeld(new BlockRelease());
+		xboxButton6.whileHeld(new BlockRelease());
+		// joystickRelease.whileHeld(new BlockRelease());
 
 		joystickHookUp.whileHeld(new HookUp());
 		joystickHookUp.whenReleased(new HookDown());
